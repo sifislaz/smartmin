@@ -5,26 +5,26 @@
         <template v-for="alert in alerts" :key="alert.id">
             <div class="mt-2">
                 <v-banner icon="mdi-exclamation-thick" v-if="alert.severity==='Hazard'" color="alertRed" class="mb-2 w-75 mx-auto">
-                <template v-slot:text>
-                    <div class="text-black font-weight-bold text-uppercase d-md-block d-lg-inline">{{alert.title}}</div>
-                    <div class="text-black ml-lg-1 d-md-block d-lg-inline">{{alert.body}} <span class="text-secondary">{{alert.room}}</span></div>
-                    <div class="text-grey ml-lg-1 d-md-block d-lg-inline">{{alert.time}}</div>
-                </template>
-            </v-banner>
-            <v-banner icon="mdi-exclamation-thick" v-else-if="alert.severity==='Medium'" color="alertOrange" class="my-2 w-75 mx-auto">
-                <template v-slot:text>
-                    <div class="text-black font-weight-bold text-uppercase d-md-block d-lg-inline">{{alert.title}}</div>
-                    <div class="text-black ml-lg-1 d-md-block d-lg-inline">{{alert.body}} <span class="text-secondary">{{alert.room}}</span></div>
-                    <div class="text-grey ml-lg-1 d-md-block d-lg-inline">{{alert.time}}</div>
-                </template>
-            </v-banner>
-            <v-banner icon="mdi-exclamation-thick" v-else-if="alert.severity==='Good'" color="alertGreen" class="my-2 w-75 mx-auto">
-                <template v-slot:text>
-                    <div class="text-black font-weight-bold text-uppercase d-md-block d-lg-inline">{{alert.title}}</div>
-                    <div class="text-black ml-lg-1 d-md-block d-lg-inline">{{alert.body}} <span class="text-secondary ">{{alert.room}}</span></div>
-                    <div class="text-grey ml-lg-1 d-md-block d-lg-inline">{{alert.time}}</div>
-                </template>
-            </v-banner>    
+                    <template v-slot:text>
+                        <div class="text-black font-weight-bold text-uppercase d-md-block d-lg-inline">{{alert.title}}</div>
+                        <div class="text-black ml-lg-1 d-md-block d-lg-inline">{{alert.body}} <span class="text-secondary">{{alert.room}}</span></div>
+                        <div class="text-grey ml-lg-1 d-md-block d-lg-inline">{{alert.time}}</div>
+                    </template>
+                </v-banner>
+                <v-banner icon="mdi-exclamation-thick" v-else-if="alert.severity==='Medium'" color="alertOrange" class="my-2 w-75 mx-auto">
+                    <template v-slot:text>
+                        <div class="text-black font-weight-bold text-uppercase d-md-block d-lg-inline">{{alert.title}}</div>
+                        <div class="text-black ml-lg-1 d-md-block d-lg-inline">{{alert.body}} <span class="text-secondary">{{alert.room}}</span></div>
+                        <div class="text-grey ml-lg-1 d-md-block d-lg-inline">{{alert.time}}</div>
+                    </template>
+                </v-banner>
+                <v-banner icon="mdi-exclamation-thick" v-else-if="alert.severity==='Good'" color="alertGreen" class="my-2 w-75 mx-auto">
+                    <template v-slot:text>
+                        <div class="text-black font-weight-bold text-uppercase d-md-block d-lg-inline">{{alert.title}}</div>
+                        <div class="text-black ml-lg-1 d-md-block d-lg-inline">{{alert.body}} <span class="text-secondary ">{{alert.room}}</span></div>
+                        <div class="text-grey ml-lg-1 d-md-block d-lg-inline">{{alert.time}}</div>
+                    </template>
+                </v-banner>    
             </div>
             
             
