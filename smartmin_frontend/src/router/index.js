@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
+import AlertsView from '../views/AlertsView.vue'
 
 const routes = [
   {
@@ -17,6 +18,14 @@ const routes = [
     component:LoginView,
     meta: {
       title: "Login - Smartmin"
+    }
+  },
+  {
+    path: '/admin/alerts',
+    name: 'alerts',
+    component:AlertsView,
+    meta: {
+      title: "Alerts - Smartmin"
     }
   }
 ]

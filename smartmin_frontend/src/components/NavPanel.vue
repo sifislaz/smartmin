@@ -31,7 +31,8 @@
     export default {
       data: () => ({
         drawer: false,
-        admin: false,
+        // admin: false,
+        admin: true,
         open:[],
         // rooms:['Office 1', 'Office 2', 'Office 3', 'Office 4', 'WC', 'Reception', 'Storage', 'Conference Room', 'Break Room']
         rooms:[
