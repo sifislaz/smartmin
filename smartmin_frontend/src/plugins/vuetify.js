@@ -17,7 +17,8 @@ export default createVuetify({
           bgDark: '#bbbbbb',
           alertRed: '#d61f1f',
           alertOrange: '#d6771f',
-          alertGreen: '1f8847'
+          alertGreen: '1f8847',
+          switchGreen: '1fd647'
         }
       }
     }

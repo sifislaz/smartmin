@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import AlertsView from '../views/AlertsView.vue'
-import OfficeView from '../views/OfficeView.vue'
+import RoomsView from '../views/RoomsView.vue'
 
 const routes = [
   {
@@ -32,7 +32,7 @@ const routes = [
   {
     path: '/rooms/:room/:id?',
     name: 'Office',
-    component: OfficeView,
+    component: RoomsView,
     meta:{
       title: `- Smartmin`
     }
