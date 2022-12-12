@@ -24,6 +24,8 @@
                             <ChartComponent v-if="tempRange==='today'" dataName="Temperature" :data="tempToday"/>
                             <ChartComponent v-if="tempRange==='3day'" dataName="Temperature" :data="temp3Days"/>
                             <ChartComponent v-if="tempRange==='week'" dataName="Temperature" :data="tempWeek"/>
+                            <ChartComponent v-if="tempRange==='2weeks'" dataName="Temperature" :data="temp2Week"/>
+                            <ChartComponent v-if="tempRange==='month'" dataName="Temperature" :data="tempMonth"/>
                             <v-divider vertical v-show="tempRange"></v-divider>
                             <div class="ml-4">
                                 <h3 class="text-secondary text-center">Options</h3>
@@ -31,6 +33,8 @@
                                     <v-radio label="Today" value="today"></v-radio>
                                     <v-radio label="Last 3 days" value="3day"></v-radio>
                                     <v-radio label="Last Week" value="week"></v-radio>
+                                    <v-radio label="Last 2 Weeks" value="2weeks"></v-radio>
+                                    <v-radio label="Last 30 Days" value="month"></v-radio>
                                 </v-radio-group>
                                 <v-divider></v-divider>
                                 <div class="mx-auto">
@@ -50,6 +54,16 @@
                                         <span class="d-block my-2 text-h6">Maximum Temperature: {{maxWeekTemp}}&#176;C</span> 
                                         <span class="d-block my-2 text-h6">Minimum Temperature: {{minWeekTemp}}&#176;C</span> 
                                     </div>
+                                    <div v-show="tempRange==='2weeks'">
+                                        <span class="d-block my-2 text-h6">Average Temperature: {{avg2WeekTemp}}&#176;C</span>
+                                        <span class="d-block my-2 text-h6">Maximum Temperature: {{max2WeekTemp}}&#176;C</span> 
+                                        <span class="d-block my-2 text-h6">Minimum Temperature: {{min2WeekTemp}}&#176;C</span> 
+                                    </div>
+                                    <div v-show="tempRange==='month'">
+                                        <span class="d-block my-2 text-h6">Average Temperature: {{avgMonthTemp}}&#176;C</span>
+                                        <span class="d-block my-2 text-h6">Maximum Temperature: {{maxMonthTemp}}&#176;C</span> 
+                                        <span class="d-block my-2 text-h6">Minimum Temperature: {{minMonthTemp}}&#176;C</span> 
+                                    </div>
                                     
                                 </div>
                             </div>
@@ -62,6 +76,8 @@
                             <ChartComponent v-if="humidRange==='today'" dataName="Humidity" :data="humidToday"/>
                             <ChartComponent v-if="humidRange==='3day'" dataName="Humidity" :data="humid3Days"/>
                             <ChartComponent v-if="humidRange==='week'" dataName="Humidity" :data="humidWeek"/>
+                            <ChartComponent v-if="humidRange==='2weeks'" dataName="Humidity" :data="humid2Week"/>
+                            <ChartComponent v-if="humidRange==='month'" dataName="Humidity" :data="humidMonth"/>
                             <v-divider vertical v-show="humidRange"></v-divider>
                             <div class="ml-4">
                                 <h3 class="text-secondary text-center">Options</h3>
@@ -69,6 +85,8 @@
                                     <v-radio label="Today" value="today"></v-radio>
                                     <v-radio label="Last 3 days" value="3day"></v-radio>
                                     <v-radio label="Last Week" value="week"></v-radio>
+                                    <v-radio label="Last 2 Weeks" value="2weeks"></v-radio>
+                                    <v-radio label="Last 30 Days" value="month"></v-radio>
                                 </v-radio-group>
                                 <v-divider></v-divider>
                                 <div class="mx-auto">
@@ -87,6 +105,16 @@
                                         <span class="d-block my-2 text-h6">Average Humidity: {{avgWeekHumid}}%</span>
                                         <span class="d-block my-2 text-h6">Maximum Humidity: {{maxWeekHumid}}%</span> 
                                         <span class="d-block my-2 text-h6">Minimum Humidity: {{minWeekHumid}}%</span> 
+                                    </div>
+                                    <div v-show="humidRange==='2weeks'">
+                                        <span class="d-block my-2 text-h6">Average Humidity: {{avg2WeekHumid}}%</span>
+                                        <span class="d-block my-2 text-h6">Maximum Humidity: {{max2WeekHumid}}%</span> 
+                                        <span class="d-block my-2 text-h6">Minimum Humidity: {{min2WeekHumid}}%</span> 
+                                    </div>
+                                    <div v-show="humidRange==='month'">
+                                        <span class="d-block my-2 text-h6">Average Humidity: {{avgMonthHumid}}%</span>
+                                        <span class="d-block my-2 text-h6">Maximum Humidity: {{maxMonthHumid}}%</span> 
+                                        <span class="d-block my-2 text-h6">Minimum Humidity: {{minMonthHumid}}%</span> 
                                     </div>
                                     
                                     
@@ -112,10 +140,13 @@ import ChartComponent from '@/components/ChartComponent.vue';
 let todayTemp = [[1673493345000, 25], [1673496945000, 27] , [1673500545000, 26], [1673504145000, 29]];
 let day3Temp = [[1673493345000, 25], [1673496945000, 27] , [1673500545000, 26], [1673504145000, 29],[1673579745000, 25], [1673583345000, 27] , [1673586945000, 26], [1673590545000, 29]];
 let weekTemp = [[1673493345000, 25], [1673496945000, 27] , [1673500545000, 26], [1673504145000, 29],[1673666145000, 25], [1673756145000, 27] , [1673846145000, 26], [1673936145000, 29]];
+let week2Temp = [[1671999000000, 25], [1672085400000, 27] , [1672171800000, 26], [1672258200000, 29],[1672344600000, 25], [1672431000000, 27] , [1672517400000, 26], [1672603800000, 29],[1673493345000, 25], [1673496945000, 27] , [1673500545000, 26], [1673504145000, 29],[1673666145000, 25], [1673756145000, 27] , [1673846145000, 26], [1673936145000, 29]]
+let monthTemp = [[1669925400000, 25], [1670148600000, 27] , [1670325930000, 26], [1670412330000, 29],[1670484330000, 25], [1670829930000, 27] , [1671089130000, 26], [1671434730000, 29],[1673493345000, 25], [1673496945000, 27] , [1673500545000, 26], [1673504145000, 29],[1673666145000, 25], [1673756145000, 27] , [1673846145000, 26], [1673936145000, 29],[1671999000000, 25], [1672085400000, 27] , [1672171800000, 26], [1672258200000, 29],[1672344600000, 25], [1672431000000, 27] , [1672517400000, 26], [1672603800000, 29],[1673493345000, 25], [1673496945000, 27] , [1673500545000, 26], [1673504145000, 29],[1673666145000, 25], [1673756145000, 27] , [1673846145000, 26], [1673936145000, 29]]
 let todayHumid = [[1673493345000, 65], [1673496945000, 67] , [1673500545000, 66], [1673504145000, 69]];
 let day3Humid = [[1673493345000, 65], [1673496945000, 67] , [1673500545000, 66], [1673504145000, 69],[1673579745000, 55], [1673583345000, 67] , [1673586945000, 66], [1673590545000, 78]];
 let weekHumid = [[1673493345000, 65], [1673496945000, 67] , [1673500545000, 66], [1673504145000, 69],[1673666145000, 55], [1673756145000, 67] , [1673846145000, 66], [1673936145000, 78]];
-
+let week2Humid = [[1671999000000, 65], [1672085400000, 67] , [1672171800000, 66], [1672258200000, 69],[1672344600000, 65], [1672431000000, 67] , [1672517400000, 66], [1672603800000, 69],[1673493345000, 59], [1673496945000, 78] , [1673500545000, 45], [1673504145000, 35],[1673666145000, 87], [1673756145000, 65] , [1673846145000, 56], [1673936145000, 49]]
+let monthHumid = [[1669925400000, 65], [1670148600000, 67] , [1670325930000, 66], [1670412330000, 69],[1670484330000, 65], [1670829930000, 67] , [1671089130000, 66], [1671434730000, 69],[1673493345000, 59], [1673496945000, 78] , [1673500545000, 45], [1673504145000, 35],[1673666145000, 87], [1673756145000, 65] , [1673846145000, 56], [1673936145000, 49],[1671999000000, 65], [1672085400000, 67] , [1672171800000, 46], [1672258200000, 59],[1672344600000, 65], [1672431000000, 67] , [1672517400000, 76], [1672603800000, 39],[1673493345000, 55], [1673496945000, 57] , [1673500545000, 66], [1673504145000, 79],[1673666145000, 55], [1673756145000, 56] , [1673846145000, 65], [1673936145000, 75]]
 function avgMeasure(measure){
     let sm = 0;
     let cnt = 0;
@@ -161,6 +192,8 @@ export default{
         tempToday: todayTemp,
         temp3Days: day3Temp,
         tempWeek: weekTemp,
+        temp2Week: week2Temp,
+        tempMonth: monthTemp,
         avgDayTemp: avgMeasure(todayTemp),
         maxDayTemp: maxMeasure(todayTemp),
         minDayTemp: minMeasure(todayTemp),
@@ -170,9 +203,17 @@ export default{
         avgWeekTemp: avgMeasure(weekTemp),
         maxWeekTemp: maxMeasure(weekTemp),
         minWeekTemp: minMeasure(weekTemp),
+        avg2WeekTemp: avgMeasure(week2Temp),
+        max2WeekTemp: maxMeasure(week2Temp),
+        min2WeekTemp: minMeasure(week2Temp),
+        avgMonthTemp: avgMeasure(monthTemp),
+        maxMonthTemp: maxMeasure(monthTemp),
+        minMonthTemp: minMeasure(monthTemp),
         humidToday: todayHumid,
         humid3Days: day3Humid,
         humidWeek: weekHumid,
+        humid2Week: week2Humid,
+        humidMonth: monthHumid,
         avgDayHumid: avgMeasure(todayHumid),
         maxDayHumid: maxMeasure(todayHumid),
         minDayHumid: minMeasure(todayHumid),
@@ -182,6 +223,12 @@ export default{
         avgWeekHumid: avgMeasure(weekHumid),
         maxWeekHumid: maxMeasure(weekHumid),
         minWeekHumid: minMeasure(weekHumid),
+        avg2WeekHumid: avgMeasure(week2Humid),
+        max2WeekHumid: maxMeasure(week2Humid),
+        min2WeekHumid: minMeasure(week2Humid),
+        avgMonthHumid: avgMeasure(monthHumid),
+        maxMonthHumid: maxMeasure(monthHumid),
+        minMonthHumid: minMeasure(monthHumid),
         
     }),
     
