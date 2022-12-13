@@ -34,7 +34,7 @@ const routes = [
     name: 'Office',
     component: RoomsView,
     meta:{
-      title: `- Smartmin`
+      title: "- Smartmin"
     }
   }
 ]
@@ -45,7 +45,22 @@ const router = createRouter({
 })
 
 router.beforeEach((to,_,next)=>{
-  document.title = `${to.meta.title}`;
+  let pageTitle = "";
+  if(to.params){
+    for(let param in to.params){
+      if(to.params[param]==="wc"){
+        pageTitle += `${to.params[param].toUpperCase()} `;
+      }
+      else if(typeof(to.params[param])==='string' && isNaN(to.params[param])===true){
+        pageTitle += `${to.params[param].charAt(0).toUpperCase()+to.params[param].slice(1)} `
+      }
+      else{
+        pageTitle += `${to.params[param]} `
+      }
+      
+    }
+  }
+  document.title = `${pageTitle + to.meta.title}`;
   next();
 });
 
