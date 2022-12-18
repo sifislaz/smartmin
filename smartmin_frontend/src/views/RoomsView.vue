@@ -136,42 +136,7 @@
 import NavPanel from '../components/NavPanel'
 import FooterBar from '../components/FooterBar'
 import ChartComponent from '@/components/ChartComponent.vue';
-
-let todayTemp = [[1673493345000, 25], [1673496945000, 27] , [1673500545000, 26], [1673504145000, 29]];
-let day3Temp = [[1673493345000, 25], [1673496945000, 27] , [1673500545000, 26], [1673504145000, 29],[1673579745000, 25], [1673583345000, 27] , [1673586945000, 26], [1673590545000, 29]];
-let weekTemp = [[1673493345000, 25], [1673496945000, 27] , [1673500545000, 26], [1673504145000, 29],[1673666145000, 25], [1673756145000, 27] , [1673846145000, 26], [1673936145000, 29]];
-let week2Temp = [[1671999000000, 25], [1672085400000, 27] , [1672171800000, 26], [1672258200000, 29],[1672344600000, 25], [1672431000000, 27] , [1672517400000, 26], [1672603800000, 29],[1673493345000, 25], [1673496945000, 27] , [1673500545000, 26], [1673504145000, 29],[1673666145000, 25], [1673756145000, 27] , [1673846145000, 26], [1673936145000, 29]]
-let monthTemp = [[1669925400000, 25], [1670148600000, 27] , [1670325930000, 26], [1670412330000, 29],[1670484330000, 25], [1670829930000, 27] , [1671089130000, 26], [1671434730000, 29],[1673493345000, 25], [1673496945000, 27] , [1673500545000, 26], [1673504145000, 29],[1673666145000, 25], [1673756145000, 27] , [1673846145000, 26], [1673936145000, 29],[1671999000000, 25], [1672085400000, 27] , [1672171800000, 26], [1672258200000, 29],[1672344600000, 25], [1672431000000, 27] , [1672517400000, 26], [1672603800000, 29],[1673493345000, 25], [1673496945000, 27] , [1673500545000, 26], [1673504145000, 29],[1673666145000, 25], [1673756145000, 27] , [1673846145000, 26], [1673936145000, 29]]
-let todayHumid = [[1673493345000, 65], [1673496945000, 67] , [1673500545000, 66], [1673504145000, 69]];
-let day3Humid = [[1673493345000, 65], [1673496945000, 67] , [1673500545000, 66], [1673504145000, 69],[1673579745000, 55], [1673583345000, 67] , [1673586945000, 66], [1673590545000, 78]];
-let weekHumid = [[1673493345000, 65], [1673496945000, 67] , [1673500545000, 66], [1673504145000, 69],[1673666145000, 55], [1673756145000, 67] , [1673846145000, 66], [1673936145000, 78]];
-let week2Humid = [[1671999000000, 65], [1672085400000, 67] , [1672171800000, 66], [1672258200000, 69],[1672344600000, 65], [1672431000000, 67] , [1672517400000, 66], [1672603800000, 69],[1673493345000, 59], [1673496945000, 78] , [1673500545000, 45], [1673504145000, 35],[1673666145000, 87], [1673756145000, 65] , [1673846145000, 56], [1673936145000, 49]]
-let monthHumid = [[1669925400000, 65], [1670148600000, 67] , [1670325930000, 66], [1670412330000, 69],[1670484330000, 65], [1670829930000, 67] , [1671089130000, 66], [1671434730000, 69],[1673493345000, 59], [1673496945000, 78] , [1673500545000, 45], [1673504145000, 35],[1673666145000, 87], [1673756145000, 65] , [1673846145000, 56], [1673936145000, 49],[1671999000000, 65], [1672085400000, 67] , [1672171800000, 46], [1672258200000, 59],[1672344600000, 65], [1672431000000, 67] , [1672517400000, 76], [1672603800000, 39],[1673493345000, 55], [1673496945000, 57] , [1673500545000, 66], [1673504145000, 79],[1673666145000, 55], [1673756145000, 56] , [1673846145000, 65], [1673936145000, 75]]
-function avgMeasure(measure){
-    let sm = 0;
-    let cnt = 0;
-
-    for(let temp of measure){
-        sm += temp[1];
-        cnt++;
-    }
-    return sm/cnt;
-}
-
-function maxMeasure(measure){
-    let fin = [];
-    for(let temp of measure){
-        fin.push(temp[1]);
-    }
-    return Math.max(...fin);
-}
-function minMeasure(measure){
-    let fin = [];
-    for(let temp of measure){
-        fin.push(temp[1]);
-    }
-    return Math.min(...fin);
-}
+import axios from 'axios';
 
 export default{
     name: 'RoomsView',
@@ -187,50 +152,33 @@ export default{
             {name:"Smart Lock", switch:true, settings:'lock'},
             {name:"Alarm", switch:true, settings:'alarm'}
         ],
-        tempRange: 'today',
-        humidRange: 'today',
-        tempToday: todayTemp,
-        temp3Days: day3Temp,
-        tempWeek: weekTemp,
-        temp2Week: week2Temp,
-        tempMonth: monthTemp,
-        avgDayTemp: avgMeasure(todayTemp),
-        maxDayTemp: maxMeasure(todayTemp),
-        minDayTemp: minMeasure(todayTemp),
-        avg3DayTemp: avgMeasure(day3Temp),
-        max3DayTemp: maxMeasure(day3Temp),
-        min3DayTemp: minMeasure(day3Temp),
-        avgWeekTemp: avgMeasure(weekTemp),
-        maxWeekTemp: maxMeasure(weekTemp),
-        minWeekTemp: minMeasure(weekTemp),
-        avg2WeekTemp: avgMeasure(week2Temp),
-        max2WeekTemp: maxMeasure(week2Temp),
-        min2WeekTemp: minMeasure(week2Temp),
-        avgMonthTemp: avgMeasure(monthTemp),
-        maxMonthTemp: maxMeasure(monthTemp),
-        minMonthTemp: minMeasure(monthTemp),
-        humidToday: todayHumid,
-        humid3Days: day3Humid,
-        humidWeek: weekHumid,
-        humid2Week: week2Humid,
-        humidMonth: monthHumid,
-        avgDayHumid: avgMeasure(todayHumid),
-        maxDayHumid: maxMeasure(todayHumid),
-        minDayHumid: minMeasure(todayHumid),
-        avg3DayHumid: avgMeasure(day3Humid),
-        max3DayHumid: maxMeasure(day3Humid),
-        min3DayHumid: minMeasure(day3Humid),
-        avgWeekHumid: avgMeasure(weekHumid),
-        maxWeekHumid: maxMeasure(weekHumid),
-        minWeekHumid: minMeasure(weekHumid),
-        avg2WeekHumid: avgMeasure(week2Humid),
-        max2WeekHumid: maxMeasure(week2Humid),
-        min2WeekHumid: minMeasure(week2Humid),
-        avgMonthHumid: avgMeasure(monthHumid),
-        maxMonthHumid: maxMeasure(monthHumid),
-        minMonthHumid: minMeasure(monthHumid),
-        
+        temp:[],
+        humid:[],
+        avgTemp:null,
+        maxTemp:null,
+        minTemp:null,
+        avgHumid:null,
+        maxHumid:null,
+        minHumid:null
     }),
-    
+    async created(){
+        try{
+            const tempRes = await axios.get("http://localhost:5000/todayTemperature");
+            this.temp = tempRes.data.temp;
+            this.avgTemp = tempRes.data.averageTemp;
+            this.maxTemp = tempRes.data.maximumTemp;
+            this.minTemp = tempRes.data.minumumTemp;
+            console.log(tempRes);
+            const humidRes = await axios.get("http://localhost:5000/todayHumidity");
+            this.humid = humidRes.data.hum;
+            this.avgHumid = humidRes.data.averageHumid;
+            this.maxHumid = humidRes.data.maximumHumid;
+            this.minHumid = humidRes.data.minumumHumid;
+            console.log(humidRes);
+        }
+        catch(e){
+            console.log(e);
+        }
+    }
 }
 </script>
