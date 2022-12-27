@@ -38,6 +38,15 @@ export default{
             data:pr.data
         }]
     }),
+
+    watch:{
+        data:function(newData){
+            console.log("changed");
+            this.series = [{
+                data: newData
+            }]
+        }
+    }
     
 }
 </script>

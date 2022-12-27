@@ -20,108 +20,18 @@
                     </v-window-item>
                     <v-window-item value="temp">
                         <h2 class="text-secondary text-center">Temperature</h2>
-                        <div class="d-flex flex-column flex-md-row justify-center align-center">
-                            <ChartComponent v-if="tempRange==='today'" dataName="Temperature" :data="tempToday"/>
-                            <ChartComponent v-if="tempRange==='3day'" dataName="Temperature" :data="temp3Days"/>
-                            <ChartComponent v-if="tempRange==='week'" dataName="Temperature" :data="tempWeek"/>
-                            <ChartComponent v-if="tempRange==='2weeks'" dataName="Temperature" :data="temp2Week"/>
-                            <ChartComponent v-if="tempRange==='month'" dataName="Temperature" :data="tempMonth"/>
-                            <v-divider vertical v-show="tempRange"></v-divider>
-                            <div class="ml-4">
-                                <h3 class="text-secondary text-center">Options</h3>
-                                <v-radio-group v-model="tempRange">
-                                    <v-radio label="Today" value="today"></v-radio>
-                                    <v-radio label="Last 3 days" value="3day"></v-radio>
-                                    <v-radio label="Last Week" value="week"></v-radio>
-                                    <v-radio label="Last 2 Weeks" value="2weeks"></v-radio>
-                                    <v-radio label="Last 30 Days" value="month"></v-radio>
-                                </v-radio-group>
-                                <v-divider></v-divider>
-                                <div class="mx-auto">
-                                    <h3 class="text-secondary text-center">Statistics</h3>
-                                    <div v-show="tempRange==='today'">
-                                        <span class="d-block my-2 text-h6">Average Temperature: {{avgDayTemp}}&#176;C</span>
-                                        <span class="d-block my-2 text-h6">Maximum Temperature: {{maxDayTemp}}&#176;C</span> 
-                                        <span class="d-block my-2 text-h6">Minimum Temperature: {{minDayTemp}}&#176;C</span> 
-                                    </div>
-                                    <div v-show="tempRange==='3day'">
-                                        <span class="d-block my-2 text-h6">Average Temperature: {{avg3DayTemp}}&#176;C</span>
-                                        <span class="d-block my-2 text-h6">Maximum Temperature: {{max3DayTemp}}&#176;C</span> 
-                                        <span class="d-block my-2 text-h6">Minimum Temperature: {{min3DayTemp}}&#176;C</span> 
-                                    </div>
-                                    <div v-show="tempRange==='week'">
-                                        <span class="d-block my-2 text-h6">Average Temperature: {{avgWeekTemp}}&#176;C</span>
-                                        <span class="d-block my-2 text-h6">Maximum Temperature: {{maxWeekTemp}}&#176;C</span> 
-                                        <span class="d-block my-2 text-h6">Minimum Temperature: {{minWeekTemp}}&#176;C</span> 
-                                    </div>
-                                    <div v-show="tempRange==='2weeks'">
-                                        <span class="d-block my-2 text-h6">Average Temperature: {{avg2WeekTemp}}&#176;C</span>
-                                        <span class="d-block my-2 text-h6">Maximum Temperature: {{max2WeekTemp}}&#176;C</span> 
-                                        <span class="d-block my-2 text-h6">Minimum Temperature: {{min2WeekTemp}}&#176;C</span> 
-                                    </div>
-                                    <div v-show="tempRange==='month'">
-                                        <span class="d-block my-2 text-h6">Average Temperature: {{avgMonthTemp}}&#176;C</span>
-                                        <span class="d-block my-2 text-h6">Maximum Temperature: {{maxMonthTemp}}&#176;C</span> 
-                                        <span class="d-block my-2 text-h6">Minimum Temperature: {{minMonthTemp}}&#176;C</span> 
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                            
+                        <div class="d-flex flex-column flex-md-row justify-center align-center mt-2">
+                            <ChartComponent dataName="Temperature" :data="temp"/>
+                            <v-divider vertical class="mx-2"></v-divider>
+                            <OptionsComponent type="temp" :avg-measure="avgTemp" :max-measure="maxTemp" :min-measure="minTemp" @temp="fetchTemp" />
                         </div>
                     </v-window-item>
                     <v-window-item value="humid">
                         <h2 class="text-secondary text-center">Humidity</h2>
-                        <div class="d-flex flex-column flex-md-row justify-center">
-                            <ChartComponent v-if="humidRange==='today'" dataName="Humidity" :data="humidToday"/>
-                            <ChartComponent v-if="humidRange==='3day'" dataName="Humidity" :data="humid3Days"/>
-                            <ChartComponent v-if="humidRange==='week'" dataName="Humidity" :data="humidWeek"/>
-                            <ChartComponent v-if="humidRange==='2weeks'" dataName="Humidity" :data="humid2Week"/>
-                            <ChartComponent v-if="humidRange==='month'" dataName="Humidity" :data="humidMonth"/>
-                            <v-divider vertical v-show="humidRange"></v-divider>
-                            <div class="ml-4">
-                                <h3 class="text-secondary text-center">Options</h3>
-                                <v-radio-group v-model="humidRange">
-                                    <v-radio label="Today" value="today"></v-radio>
-                                    <v-radio label="Last 3 days" value="3day"></v-radio>
-                                    <v-radio label="Last Week" value="week"></v-radio>
-                                    <v-radio label="Last 2 Weeks" value="2weeks"></v-radio>
-                                    <v-radio label="Last 30 Days" value="month"></v-radio>
-                                </v-radio-group>
-                                <v-divider></v-divider>
-                                <div class="mx-auto">
-                                    <h3 class="text-secondary text-center">Statistics</h3>
-                                    <div v-show="humidRange==='today'">
-                                        <span class="d-block my-2 text-h6">Average Humidity: {{avgDayHumid}}%</span>
-                                        <span class="d-block my-2 text-h6">Maximum Humidity: {{maxDayHumid}}%</span> 
-                                        <span class="d-block my-2 text-h6">Minimum Humidity: {{minDayHumid}}%</span> 
-                                    </div>
-                                    <div v-show="humidRange==='3day'">
-                                        <span class="d-block my-2 text-h6">Average Humidity: {{avg3DayHumid}}%</span>
-                                        <span class="d-block my-2 text-h6">Maximum Humidity: {{max3DayHumid}}%</span> 
-                                        <span class="d-block my-2 text-h6">Minimum Humidity: {{min3DayHumid}}%</span> 
-                                    </div>
-                                    <div v-show="humidRange==='week'">
-                                        <span class="d-block my-2 text-h6">Average Humidity: {{avgWeekHumid}}%</span>
-                                        <span class="d-block my-2 text-h6">Maximum Humidity: {{maxWeekHumid}}%</span> 
-                                        <span class="d-block my-2 text-h6">Minimum Humidity: {{minWeekHumid}}%</span> 
-                                    </div>
-                                    <div v-show="humidRange==='2weeks'">
-                                        <span class="d-block my-2 text-h6">Average Humidity: {{avg2WeekHumid}}%</span>
-                                        <span class="d-block my-2 text-h6">Maximum Humidity: {{max2WeekHumid}}%</span> 
-                                        <span class="d-block my-2 text-h6">Minimum Humidity: {{min2WeekHumid}}%</span> 
-                                    </div>
-                                    <div v-show="humidRange==='month'">
-                                        <span class="d-block my-2 text-h6">Average Humidity: {{avgMonthHumid}}%</span>
-                                        <span class="d-block my-2 text-h6">Maximum Humidity: {{maxMonthHumid}}%</span> 
-                                        <span class="d-block my-2 text-h6">Minimum Humidity: {{minMonthHumid}}%</span> 
-                                    </div>
-                                    
-                                    
-                                    
-                                </div>
-                            </div>
-                            
+                        <div class="d-flex flex-column flex-md-row justify-center align-center mt-2">
+                            <ChartComponent dataName="Humidity" :data="humid"/>
+                            <v-divider vertical class="mx-2"></v-divider>
+                            <OptionsComponent type="humid" :avg-measure="avgHumid" :max-measure="maxHumid" :min-measure="minHumid" @humid="fetchHumid" />
                         </div>
                     </v-window-item>
                 </v-window>
@@ -136,6 +46,7 @@
 import NavPanel from '../components/NavPanel'
 import FooterBar from '../components/FooterBar'
 import ChartComponent from '@/components/ChartComponent.vue';
+import OptionsComponent from '@/components/OptionsComponent.vue';
 import axios from 'axios';
 
 export default{
@@ -143,7 +54,8 @@ export default{
     components:{
         NavPanel,
         FooterBar,
-        ChartComponent
+        ChartComponent,
+        OptionsComponent
     },
     data: ()=>({
         tab: null,
@@ -159,26 +71,77 @@ export default{
         minTemp:null,
         avgHumid:null,
         maxHumid:null,
-        minHumid:null
+        minHumid:null,
     }),
     async created(){
-        try{
-            const tempRes = await axios.get("http://localhost:5000/todayTemperature");
-            this.temp = tempRes.data.temp;
-            this.avgTemp = tempRes.data.averageTemp;
-            this.maxTemp = tempRes.data.maximumTemp;
-            this.minTemp = tempRes.data.minumumTemp;
-            console.log(tempRes);
-            const humidRes = await axios.get("http://localhost:5000/todayHumidity");
-            this.humid = humidRes.data.hum;
-            this.avgHumid = humidRes.data.averageHumid;
-            this.maxHumid = humidRes.data.maximumHumid;
-            this.minHumid = humidRes.data.minumumHumid;
-            console.log(humidRes);
+        this.fetchTemp("today")
+        this.fetchHumid("today")
+    },
+    methods:{
+        async fetchTemp(range){
+            let tempRes = null;
+            try{
+                switch(range){
+                    case "today":
+                        tempRes = await axios.get("http://localhost:5000/todayTemperature");
+                        break;
+                    case "3day":
+                        tempRes = await axios.get("http://localhost:5000/threeDayTemperature");
+                        break;
+                    case "week":
+                        tempRes = await axios.get("http://localhost:5000/weekTemperature");
+                        break;
+                    case "2weeks":
+                        tempRes = await axios.get("http://localhost:5000/twoWeekTemperature");
+                        break;
+                    case "month":
+                        tempRes = await axios.get("http://localhost:5000/monthTemperature");
+                        break;
+                }
+                
+                this.temp = tempRes.data.temp;
+                this.avgTemp = tempRes.data.averageTemp;
+                this.maxTemp = tempRes.data.maximumTemp;
+                this.minTemp = tempRes.data.minimumTemp;
+                this.$emit('change-values');
+            }
+            catch(e){
+                console.log(e);
+            }
+        },
+        async fetchHumid(range){
+            let humidRes = null;
+            try{
+                switch(range){
+                    case "today":
+                        humidRes = await axios.get("http://localhost:5000/todayHumidity");
+                        break;
+                    case "3day":
+                        humidRes = await axios.get("http://localhost:5000/threeDayHumidity");
+                        break;
+                    case "week":
+                        humidRes = await axios.get("http://localhost:5000/weekHumidity");
+                        break;
+                    case "2weeks":
+                        humidRes = await axios.get("http://localhost:5000/twoWeekHumidity");
+                        break;
+                    case "month":
+                        humidRes = await axios.get("http://localhost:5000/monthHumidity");
+                        break;
+                }
+                
+                this.humid = humidRes.data.hum;
+                this.avgHumid = humidRes.data.averageHumid;
+                this.maxHumid = humidRes.data.maximumHumid;
+                this.minHumid = humidRes.data.minimumHumid;
+                this.$emit('change-values');
+            }
+            catch(e){
+                console.log(e);
+            }
         }
-        catch(e){
-            console.log(e);
-        }
-    }
+    },
+    emits: ['change-values']
+    
 }
 </script>
