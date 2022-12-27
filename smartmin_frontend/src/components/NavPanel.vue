@@ -32,13 +32,8 @@
         rooms:[
             {icon:'mdi-desk', title:'Office 1', path:'/rooms/office/1'},
             {icon:'mdi-desk', title:'Office 2', path:'/rooms/office/2'},
-            {icon:'mdi-desk', title:'Office 3', path:'/rooms/office/3'},
-            {icon:'mdi-desk', title:'Office 4', path:'/rooms/office/4'},
-            {icon:'mdi-toilet', title:'WC', path:'/rooms/wc'},
-            {icon:'mdi-office-building-marker', title:'Reception', path:'/rooms/reception'},
             {icon:'mdi-cube-outline', title:'Storage', path:'/rooms/storage'},
-            {icon:'mdi-account-group', title: 'Conference Room', path:'/rooms/conf'},
-            {icon:'mdi-coffee', title:'Break Room', path:'/rooms/break'},
+
 
         ]
  }),
