@@ -8,21 +8,21 @@
                     <template v-slot:text>
                         <div class="text-black font-weight-bold text-uppercase d-md-block d-lg-inline">{{alert.title}}</div>
                         <div class="text-black ml-lg-1 d-md-block d-lg-inline">{{alert.body}} <span class="text-secondary">{{alert.room}}</span></div>
-                        <div class="text-grey ml-lg-1 d-md-block d-lg-inline">{{alert.time}}</div>
+                        <div class="text-grey ml-lg-1 d-md-block d-lg-inline">{{alert.datetime}}</div>
                     </template>
                 </v-banner>
                 <v-banner icon="mdi-exclamation-thick" v-else-if="alert.severity==='Medium'" color="alertOrange" class="my-2 w-75 mx-auto">
                     <template v-slot:text>
                         <div class="text-black font-weight-bold text-uppercase d-md-block d-lg-inline">{{alert.title}}</div>
                         <div class="text-black ml-lg-1 d-md-block d-lg-inline">{{alert.body}} <span class="text-secondary">{{alert.room}}</span></div>
-                        <div class="text-grey ml-lg-1 d-md-block d-lg-inline">{{alert.time}}</div>
+                        <div class="text-grey ml-lg-1 d-md-block d-lg-inline">{{alert.datetime}}</div>
                     </template>
                 </v-banner>
                 <v-banner icon="mdi-exclamation-thick" v-else-if="alert.severity==='Good'" color="alertGreen" class="my-2 w-75 mx-auto">
                     <template v-slot:text>
                         <div class="text-black font-weight-bold text-uppercase d-md-block d-lg-inline">{{alert.title}}</div>
                         <div class="text-black ml-lg-1 d-md-block d-lg-inline">{{alert.body}} <span class="text-secondary ">{{alert.room}}</span></div>
-                        <div class="text-grey ml-lg-1 d-md-block d-lg-inline">{{alert.time}}</div>
+                        <div class="text-grey ml-lg-1 d-md-block d-lg-inline">{{alert.datetime}}</div>
                     </template>
                 </v-banner>    
             </div>
@@ -35,6 +35,7 @@
 <script>
 import NavPanel from '@/components/NavPanel'
 import FooterBar from '@/components/FooterBar.vue';
+import axios from 'axios';
 
 export default{
     name:'AlertsView',
@@ -44,55 +45,24 @@ export default{
     },
 
     data: ()=>({
-        alerts:{
-            totalItems: 5,
-            alerts: [
-                {   
-                    id: "5",
-                    severity: "Hazard",
-                    title: "Unauthorized Access",
-                    body: "Unauthorized access in",
-                    room: "Office 1",
-                    time: "2022-12-04 12:30:00"
-                },
-                {
-                    id: "4",
-                    severity: "Medium",
-                    title: "Temperature Fall",
-                    body: "Temperature fell below accepted values in",
-                    room: "Reception",
-                    time: "2022-12-04 10:25:00"
-                },
-                {
-                    id: "3",
-                    severity: "Medium",
-                    title: "Temperature Fall",
-                    body: "Temperature fell below accepted values in",
-                    room: "Reception",
-                    time: "2022-12-04 10:25:00"
-                },
-                {
-                    id: "2",
-                    severity: "Medium",
-                    title: "Temperature Fall",
-                    body: "Temperature fell below accepted values in",
-                    room: "Reception",
-                    time: "2022-12-04 10:25:00"
-                },
-                {
-                    id: "1",
-                    severity: "Good",
-                    title: "Access Granted",
-                    body: "Authorized access in",
-                    room: "Storage",
-                    time: "2022-12-04 09:45:00"
-                },
-            ],
-            totalPages: 3,
-            currentPage: 1
-
+        alerts:[]
+    }),
+    async created(){
+        this.fetchAlerts()
+    },
+    methods:{
+        async fetchAlerts(){
+            let alertsRes = null;
+            try{
+                alertsRes = await axios.get("http://localhost:5000/alerts");
+                console.log(alertsRes);
+                this.alerts = alertsRes.data
+            }
+            catch(e){
+                console.log(e);
+            }
         }
-    })
+    }
 
     
 }
