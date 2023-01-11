@@ -30,7 +30,7 @@ const routes = [
     }
   },
   {
-    path: '/rooms/:room/:id?',
+    path: '/rooms/:id',
     name: 'Office',
     component: RoomsView,
     meta:{
@@ -47,17 +47,32 @@ const router = createRouter({
 router.beforeEach((to,_,next)=>{
   let pageTitle = "";
   if(to.params){
-    for(let param in to.params){
-      if(to.params[param]==="wc"){
-        pageTitle += `${to.params[param].toUpperCase()} `;
-      }
-      else if(typeof(to.params[param])==='string' && isNaN(to.params[param])===true){
-        pageTitle += `${to.params[param].charAt(0).toUpperCase()+to.params[param].slice(1)} `
-      }
-      else{
-        pageTitle += `${to.params[param]} `
-      }
+    // for(let param in to.params){
+    //   if(to.params[param]==="wc"){
+    //     pageTitle += `${to.params[param].toUpperCase()} `;
+    //   }
+    //   else if(typeof(to.params[param])==='string' && isNaN(to.params[param])===true){
+    //     pageTitle += `${to.params[param].charAt(0).toUpperCase()+to.params[param].slice(1)} `
+    //   }
+    //   else{
+    //     pageTitle += `${to.params[param]} `
+    //   }
       
+    // }
+    switch(to.params['id']){
+      case "9bc13":
+        pageTitle = "Office 1 ";
+        break;
+      case "43b11":
+        pageTitle = "Office 2 ";
+        break;
+      case "84c2e":
+        pageTitle = "Storage ";
+        break;
+      default:
+        console.log(to.params[0]);
+        pageTitle = "Invalid ";
+        break;
     }
   }
   document.title = `${pageTitle + to.meta.title}`;

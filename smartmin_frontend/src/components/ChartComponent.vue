@@ -41,7 +41,6 @@ export default{
 
     watch:{
         data:function(newData){
-            console.log("changed");
             this.series = [{
                 data: newData
             }]

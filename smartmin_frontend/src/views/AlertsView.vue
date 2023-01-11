@@ -41,7 +41,6 @@ export default{
             let alertsRes = null;
             try{
                 alertsRes = await axios.get("http://localhost:5000/alerts");
-                console.log(alertsRes);
                 this.alerts = alertsRes.data
             }
             catch(e){

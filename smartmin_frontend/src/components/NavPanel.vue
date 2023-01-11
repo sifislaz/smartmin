@@ -8,7 +8,7 @@
             <template v-slot:activator="{props}">
                 <v-list-item v-bind="props" prepend-icon="mdi-office-building" title="Rooms" class="text-white"></v-list-item>
             </template>
-            <v-list-item v-for="(room,i) in rooms" :key="i" :title="room.title" :value="room" :to="room.path" :prepend-icon="room.icon" class="text-white"></v-list-item>
+            <v-list-item v-for="(room,i) in rooms" :key="i" :title="room.title" :value="room" :to="`/rooms/${room.id}`" :prepend-icon="room.icon" class="text-white"></v-list-item>
         </v-list-group>
         <v-list-item v-show="admin" prepend-icon="mdi-logout" title="Log Out" value="logout" to="/logout" class="text-white"></v-list-item>
     </v-list>
@@ -28,11 +28,10 @@
         // admin: false,
         admin: true,
         open:[],
-        // rooms:['Office 1', 'Office 2', 'Office 3', 'Office 4', 'WC', 'Reception', 'Storage', 'Conference Room', 'Break Room']
         rooms:[
-            {icon:'mdi-desk', title:'Office 1', path:'/rooms/office/1'},
-            {icon:'mdi-desk', title:'Office 2', path:'/rooms/office/2'},
-            {icon:'mdi-cube-outline', title:'Storage', path:'/rooms/storage'},
+            {icon:'mdi-desk', title:'Office 1', id:"9bc13"},
+            {icon:'mdi-desk', title:'Office 2', id:"43b11"},
+            {icon:'mdi-cube-outline', title:'Storage', id:"84c2e"},
 
 
         ]

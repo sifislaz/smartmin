@@ -1,7 +1,7 @@
 <template>
     <NavPanel/>
     <v-sheet color="bgLight" class="w-100 h-100">
-        <h1 class="text-primary text-center" :class="$route.params.room==='wc'?'text-uppercase':'text-capitalize'">{{$route.params.room!=='conf'?$route.params.room!=='break'?$route.params.room:'Break Room':'Conference Room'}} {{$route.params.id}}</h1>
+        <h1 class="text-primary text-center">{{ roomName }}</h1>
         <v-card class="bg-bgDark rounded-shaped">
             <v-tabs v-model="tab" bg-color="secondary">
                 <v-tab value="settings">Settings</v-tab>
@@ -12,10 +12,10 @@
                 <v-window v-model="tab">
                     <v-window-item value="settings">
                         <h2 class="text-secondary text-center">Settings</h2>
-                        <div v-for="sensor in sensors" :key="sensor.name" class="bg-primary rounded-lg pa-4 my-2 d-flex justify-center align-center w-50 mx-auto">
-                            <span class="text-white text-h5">{{sensor.name}}</span>
-                            <v-switch :model-value="sensor.switch" color="switchGreen" class="ml-5" inset hide-details></v-switch>
-                            <a :href="$route.params.room==='office'?'./'+$route.params.id+'/settings/'+sensor.settings:'./'+$route.params.room+'/settings/'+sensor.settings" class="text-white">Settings</a>
+                        <div v-for="sensor of sensors" :key="sensor.id" class="bg-primary rounded-lg pa-4 my-2 d-flex justify-center align-center w-50 mx-auto">
+                            <span class="text-white text-h5">{{sensor.type}}</span>
+                            <v-switch :model-value="sensor.value" color="switchGreen" class="ml-5" inset hide-details></v-switch>
+                            <a :href="$route.params.id+'/settings/'+sensor.id" class="text-white">Settings</a>
                         </div>
                     </v-window-item>
                     <v-window-item value="temp">
@@ -59,26 +59,43 @@ export default{
     },
     data: ()=>({
         tab: null,
-        sensors:[
-            {name:"Lights", switch:false, settings:'lights'},
-            {name:"Smart Lock", switch:true, settings:'lock'},
-            {name:"Alarm", switch:true, settings:'alarm'}
-        ],
+        sensors:[],
         temp:[],
         humid:[],
+        roomName:null,
         avgTemp:null,
         maxTemp:null,
         minTemp:null,
         avgHumid:null,
         maxHumid:null,
         minHumid:null,
+        tmpRng:null,
+        humRng:null,
     }),
     async created(){
+        this.fetchContent(this.$route.params.id)
         this.fetchTemp("today")
         this.fetchHumid("today")
     },
+    async updated(){
+        this.fetchContent(this.$route.params.id)
+        this.fetchTemp(this.tmpRng)
+        this.fetchHumid(this.humRng)
+    },
     methods:{
+        async fetchContent(id){
+            let room = null;
+            try{
+                room = await axios.get(`http://localhost:5000/rooms/${id}`);
+                this.roomName = room.data.name;
+                this.sensors = room.data.sensors;
+            }
+            catch(e){
+                console.log(e);
+            }
+        },
         async fetchTemp(range){
+            this.tmpRng = range;
             let tempRes = null;
             try{
                 switch(range){
@@ -110,6 +127,7 @@ export default{
             }
         },
         async fetchHumid(range){
+            this.humRng = range;
             let humidRes = null;
             try{
                 switch(range){
