@@ -1,6 +1,7 @@
 const Humidity = require('../model/Humidity');
 const Temperature = require('../model/Temperature');
 const Room = require("../model/Room");
+const Alert = require("../model/Alert");
 const moment = require("moment");
 
 const addNewTempReading = async (req,res)=>{
@@ -153,10 +154,27 @@ const getHumReading = async(req, res)=>{
 
 }
 
+const getAlerts = async(req, res)=>{
+    try{
+        const result = await Alert.find().lean().exec();
+        const alert = result.map(({_id,title,body,severity,date,origin})=>{
+            return {id:_id, title:title, body:body, severity: severity, date:date, origin:origin};
+        });
+        res.status(200).json({
+            "alert":alert
+        })
+    }
+    catch(err){
+        res.status(500).json({'message':err.message});
+    }
+    
+}
+
 module.exports = {
     addNewTempReading,
     getTempReading,
     addNewHumReading,
-    getHumReading
+    getHumReading,
+    getAlerts
 
 }

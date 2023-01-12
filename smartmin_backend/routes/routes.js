@@ -23,13 +23,12 @@ router.route('/room/')
 router.route('/room/:roomId/')
     .get(roomController.getRoom)
 
-/*
 
 router.route('/alerts')
-    .get()
-    .post();
+    .get(controller.getAlerts)
+    // .post();
 
-
+/*
 router.route('/alerts/room/:roomId')
     .get()
     .post();

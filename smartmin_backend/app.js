@@ -21,8 +21,8 @@ const uri = process.env.DB_URI
 //console.log(uri)
 
 mongoose.connect(uri,
-    //{dbName: 'SmartminDB'},
-    {dbName: 'test'},
+    {dbName: 'SmartminDB'},
+    // {dbName: 'test'},
 
     {
     useNewUrlParser: true,
