@@ -6,7 +6,7 @@ const moment = require("moment");
 const addNewTempReading = async (req,res)=>{
     var { reading, origin} = req.body;
 
-    origin.room = await Room.findOne({'name': req.params.roomId},'_id').lean().exec();
+    origin.room = await Room.findById( req.params.roomId).lean().exec();
     if(!origin.room){
         res.status(400).json({ 'bad request': 'No such room exists' });
         return
@@ -21,6 +21,7 @@ const addNewTempReading = async (req,res)=>{
          //const alert1 =  alert.checkTempValue(), https://vuetifyjs.com/en/components/badges/
          //if(alert===false)
         res.status(201).json({ 'success': `New temp reading of ${reading.value} created!` });
+    
        
     } catch (err) {
         res.status(500).json({ 'message': err.message });
@@ -36,7 +37,7 @@ const getTempReading = async(req, res)=>{
     const timeframe = new Date(moment().subtract(timeNumber,timeScale).format()).getTime()
 
     try{
-    const result = await Temperature.find({'reading.date' : {$gt: timeframe}},'reading.value reading.date' ).lean().exec();
+    const result = await Temperature.find({'reading.date' : {$gt: timeframe}, 'origin.room' : req.params.roomId},'reading.value reading.date' ).lean().exec();
     
     const temperature = result.map(({_id,reading:{value, date}})=>{
         return {id:_id, x:date, y:value};
@@ -83,7 +84,7 @@ const addNewHumReading = async (req,res)=>{
     var { reading, origin} = req.body;
     
     try {
-        origin.room = await Room.findOne({'name': req.params.roomId},'_id').lean().exec();
+        origin.room = await Room.findById( req.params.roomId).lean().exec();
         if(!origin.room){
             res.status(400).json({ 'bad request': 'No such room exists' });
             return
@@ -110,7 +111,7 @@ const getHumReading = async(req, res)=>{
     const timeframe = new Date(moment().subtract(timeNumber,timeScale).format()).getTime()
 
     try{
-    const result = await Humidity.find({'reading.date' : {$gt: timeframe}},'reading.value reading.date' ).lean().exec();
+    const result = await Humidity.find({'reading.date' : {$gt: timeframe}, 'origin.room' : req.params.roomId},'reading.value reading.date' ).lean().exec();
     
     const humidity = result.map(({_id,reading:{value, date}})=>{
         return {id:_id, x:date, y:value};

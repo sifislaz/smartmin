@@ -20,7 +20,11 @@ mongoose.set('strictQuery', true);
 const uri = process.env.DB_URI
 //console.log(uri)
 
-mongoose.connect(uri,{
+mongoose.connect(uri,
+    //{dbName: 'SmartminDB'},
+    {dbName: 'test'},
+
+    {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
