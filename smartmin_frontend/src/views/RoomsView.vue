@@ -74,13 +74,13 @@ export default{
     }),
     async created(){
         this.fetchContent(this.$route.params.id)
-        this.fetchTemp("today")
-        this.fetchHumid("today")
+        this.fetchTemp(this.$route.params.id,"today")
+        this.fetchHumid(this.$route.params.id,"today")
     },
     async updated(){
         this.fetchContent(this.$route.params.id)
-        this.fetchTemp(this.tmpRng)
-        this.fetchHumid(this.humRng)
+        this.fetchTemp(this.$route.params.id,this.tmpRng)
+        this.fetchHumid(this.$route.params.id,this.humRng)
     },
     methods:{
         async fetchContent(id){
@@ -94,25 +94,25 @@ export default{
                 console.log(e);
             }
         },
-        async fetchTemp(range){
+        async fetchTemp(roomId,range){
             this.tmpRng = range;
             let tempRes = null;
             try{
                 switch(range){
                     case "today":
-                        tempRes = await axios.get("http://localhost:5000/todayTemperature");
+                        tempRes = await axios.get(`http://localhost:5000/data/room/${roomId}/temp?timeNumber=1&timeScale=days`);
                         break;
                     case "3day":
-                        tempRes = await axios.get("http://localhost:5000/threeDayTemperature");
+                        tempRes = await axios.get(`http://localhost:5000/data/room/${roomId}/temp?timeNumber=3&timeScale=days`);
                         break;
                     case "week":
-                        tempRes = await axios.get("http://localhost:5000/weekTemperature");
+                        tempRes = await axios.get(`http://localhost:5000/data/room/${roomId}/temp?timeNumber=7&timeScale=days`);
                         break;
                     case "2weeks":
-                        tempRes = await axios.get("http://localhost:5000/twoWeekTemperature");
+                        tempRes = await axios.get(`http://localhost:5000/data/room/${roomId}/temp?timeNumber=14&timeScale=days`);
                         break;
                     case "month":
-                        tempRes = await axios.get("http://localhost:5000/monthTemperature");
+                        tempRes = await axios.get(`http://localhost:5000/data/room/${roomId}/temp?timeNumber=30&timeScale=days`);
                         break;
                 }
                 
@@ -126,25 +126,25 @@ export default{
                 console.log(e);
             }
         },
-        async fetchHumid(range){
+        async fetchHumid(roomId,range){
             this.humRng = range;
             let humidRes = null;
             try{
                 switch(range){
                     case "today":
-                        humidRes = await axios.get("http://localhost:5000/todayHumidity");
+                        humidRes = await axios.get(`http://localhost:5000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
                         break;
                     case "3day":
-                        humidRes = await axios.get("http://localhost:5000/threeDayHumidity");
+                        humidRes = await axios.get(`http://localhost:5000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
                         break;
                     case "week":
-                        humidRes = await axios.get("http://localhost:5000/weekHumidity");
+                        humidRes = await axios.get(`http://localhost:5000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
                         break;
                     case "2weeks":
-                        humidRes = await axios.get("http://localhost:5000/twoWeekHumidity");
+                        humidRes = await axios.get(`http://localhost:5000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
                         break;
                     case "month":
-                        humidRes = await axios.get("http://localhost:5000/monthHumidity");
+                        humidRes = await axios.get(`http://localhost:5000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
                         break;
                 }
                 
