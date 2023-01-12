@@ -56,9 +56,7 @@
 </template>
 
 <script>
-
-// Components
-
+import axios from 'axios';
 
 export default {
     name: 'LoginView',
@@ -71,14 +69,25 @@ export default {
     }),
 
     methods: {
-        onSubmit(){
-            if(!this.form)return
-            this.loading = true
-            setTimeout(()=>{
-                this.loading = false;
-                this.username = null;
-                this.password = null;
-            }, 2000)
+        async onSubmit(){
+            if(!this.form) return;
+            this.loading = true;
+            const users = await axios(`http://localhost:5000/users?username=${this.username}`);
+            if(users.data.length!==0){
+                if(this.username===users.data[0].username && this.password === users.data[0].password){
+                    localStorage.setItem('jwt','sussyBaka');
+                    this.$emit('loggedIn');
+                    this.$router.push('alerts');
+                    this.loading = false;
+                }
+                else{
+                    this.username="";
+                    this.password="";
+                    alert("Wrong Input! Try again");
+                    this.loading = false;
+                }
+            }
+            
         },
         required(v){
             return !!v || 'Field is required'

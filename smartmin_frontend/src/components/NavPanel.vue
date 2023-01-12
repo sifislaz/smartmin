@@ -3,7 +3,7 @@
     <v-list v-model:opened="open" nav>
         <v-chip @click="drawer = !drawer" class="ml-2 mb-4 d-lg-none b-0" color="#bbb" >&lt; Close</v-chip>
         <v-list-item prepend-icon="mdi-home" title="Home" value="home" to="/" class="text-white"></v-list-item>
-        <v-list-item v-show="admin" prepend-icon="mdi-alert-circle" title="Alerts" value="alerts" to="/admin/alerts" class="text-white"></v-list-item>
+        <v-list-item v-show="admin" prepend-icon="mdi-alert-circle" title="Alerts" value="alerts" to="/alerts" class="text-white"></v-list-item>
         <v-list-group value="Rooms">
             <template v-slot:activator="{props}">
                 <v-list-item v-bind="props" prepend-icon="mdi-office-building" title="Rooms" class="text-white"></v-list-item>
