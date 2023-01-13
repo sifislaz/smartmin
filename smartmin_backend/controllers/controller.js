@@ -2,6 +2,7 @@ const Humidity = require('../model/Humidity');
 const Temperature = require('../model/Temperature');
 const Room = require("../model/Room");
 const Alert = require("../model/Alert");
+const alertController = require("./alertController");
 const moment = require("moment");
 
 const addNewTempReading = async (req,res)=>{
@@ -20,9 +21,12 @@ const addNewTempReading = async (req,res)=>{
         });
         
          //const alert1 =  alert.checkTempValue(), https://vuetifyjs.com/en/components/badges/
-         //if(alert===false)
+        if(alertController.checkTempValue(result)===false)
         res.status(201).json({ 'success': `New temp reading of ${reading.value} created!` });
-    
+        else
+        res.status(201).json({ 
+            'success': `New temp reading of ${reading.value} created!`,
+        'warning': 'Alert created!'});
        
     } catch (err) {
         res.status(500).json({ 'message': err.message });

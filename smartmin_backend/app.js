@@ -1,28 +1,19 @@
-const express = require("express")
-const mongoose = require("mongoose")
-const bodyParser = require("body-parser")
-const configEnv = require('dotenv').config({ path: './config.env' })
-
+const express = require("express");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const configEnv = require("dotenv").config({ path: './config.env' });
+const verifyJWT = require("./middleware/verifyJWT");
+const cookieParser = require("cookie-parser");
 //create out express app
 const app = express()
 
-//Handle CORS + middleware
-app.use(function(req, res, next){
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE"); // If using .fetch and not axios
-    res.header("Access-Control-Allow-Headers", "auth-token, Origin, X-Requested-With, Content-Type, Accept");
-    next();
-})
 
 //DB stuff  
 mongoose.set('strictQuery', true);
-
 const uri = process.env.DB_URI
-//console.log(uri)
-
 mongoose.connect(uri,
-    {dbName: 'SmartminDB'},
-    // {dbName: 'test'},
+    //{dbName: 'SmartminDB'},
+     {dbName: 'test'},
 
     {
     useNewUrlParser: true,
@@ -30,16 +21,43 @@ mongoose.connect(uri,
 })
 .catch((error) => console.log(error))
 
+//Handle CORS + middleware
+app.use(function(req, res, next){
+    
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Credentials", true)
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE"); // If using .fetch and not axios
+    res.header("Access-Control-Allow-Headers", "auth-token, Origin, X-Requested-With, Content-Type, Accept");
+    
+    next();
+})
 
+//parsing middleware
+app.use(express.json())
+app.use(cookieParser())
 
-app.use(bodyParser.json())
-
+//homepage
 app.get("/", (req, res) =>{
     res.send("Running!")
 })
 
-const dataRoute = require('./routes/routes');
-app.use('/data', dataRoute)
+
+//log, in & out 
+app.use('/auth', require('./routes/auth'))
+app.use('/refresh', require('./routes/refresh'))
+app.use('/logout', require('./routes/logout'))
+
+
+
+
+//verify aprooved users 
+app.use(verifyJWT)
+
+
+app.use('/data', require('./routes/dataRoutes'))
+
+
+
 
 //start server
 mongoose.connection.once('open', ()=>{
