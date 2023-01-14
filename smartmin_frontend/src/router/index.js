@@ -90,13 +90,13 @@ router.beforeEach((to, _, next) => {
     let pageTitle = "";
     if (to.params) {
         switch (to.params['id']) {
-            case "9bc13":
+            case "63c04af69e05d8e5a0fa0a23":
                 pageTitle = "Office 1 ";
                 break;
-            case "43b11":
+            case "63c04afa9e05d8e5a0fa0a25":
                 pageTitle = "Office 2 ";
                 break;
-            case "84c2e":
+            case "63c04b089e05d8e5a0fa0a27":
                 pageTitle = "Storage ";
                 break;
             default:
