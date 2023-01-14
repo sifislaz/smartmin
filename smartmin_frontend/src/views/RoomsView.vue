@@ -74,19 +74,19 @@ export default{
     }),
     async created(){
         this.fetchContent(this.$route.params.id)
-        this.fetchTemp(this.$route.params.id,"today")
-        this.fetchHumid(this.$route.params.id,"today")
+        this.fetchTemp("today",this.$route.params.id)
+        this.fetchHumid("today",this.$route.params.id)
     },
     async updated(){
         this.fetchContent(this.$route.params.id)
-        this.fetchTemp(this.$route.params.id,this.tmpRng)
-        this.fetchHumid(this.$route.params.id,this.humRng)
+        this.fetchTemp(this.tmpRng,this.$route.params.id)
+        this.fetchHumid(this.humRng,this.$route.params.id)
     },
     methods:{
         async fetchContent(id){
             let room = null;
             try{
-                room = await axios.get(`http://localhost:5000/rooms/${id}`);
+                room = await axios.get(`http://localhost:3000/rooms/${id}`);
                 this.roomName = room.data.name;
                 this.sensors = room.data.sensors;
             }
@@ -94,25 +94,25 @@ export default{
                 console.log(e);
             }
         },
-        async fetchTemp(roomId,range){
+        async fetchTemp(range,roomId = this.$route.params.id,){
             this.tmpRng = range;
             let tempRes = null;
             try{
                 switch(range){
                     case "today":
-                        tempRes = await axios.get(`http://localhost:5000/data/room/${roomId}/temp?timeNumber=1&timeScale=days`);
+                        tempRes = await axios.get(`http://localhost:3000/data/room/${roomId}/temp?timeNumber=1&timeScale=days`);
                         break;
                     case "3day":
-                        tempRes = await axios.get(`http://localhost:5000/data/room/${roomId}/temp?timeNumber=3&timeScale=days`);
+                        tempRes = await axios.get(`http://localhost:3000/data/room/${roomId}/temp?timeNumber=3&timeScale=days`);
                         break;
                     case "week":
-                        tempRes = await axios.get(`http://localhost:5000/data/room/${roomId}/temp?timeNumber=7&timeScale=days`);
+                        tempRes = await axios.get(`http://localhost:3000/data/room/${roomId}/temp?timeNumber=7&timeScale=days`);
                         break;
                     case "2weeks":
-                        tempRes = await axios.get(`http://localhost:5000/data/room/${roomId}/temp?timeNumber=14&timeScale=days`);
+                        tempRes = await axios.get(`http://localhost:3000/data/room/${roomId}/temp?timeNumber=14&timeScale=days`);
                         break;
                     case "month":
-                        tempRes = await axios.get(`http://localhost:5000/data/room/${roomId}/temp?timeNumber=30&timeScale=days`);
+                        tempRes = await axios.get(`http://localhost:3000/data/room/${roomId}/temp?timeNumber=30&timeScale=days`);
                         break;
                 }
                 
@@ -126,25 +126,25 @@ export default{
                 console.log(e);
             }
         },
-        async fetchHumid(roomId,range){
+        async fetchHumid(range,roomId = this.$route.params.id){
             this.humRng = range;
             let humidRes = null;
             try{
                 switch(range){
                     case "today":
-                        humidRes = await axios.get(`http://localhost:5000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
+                        humidRes = await axios.get(`http://localhost:3000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
                         break;
                     case "3day":
-                        humidRes = await axios.get(`http://localhost:5000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
+                        humidRes = await axios.get(`http://localhost:3000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
                         break;
                     case "week":
-                        humidRes = await axios.get(`http://localhost:5000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
+                        humidRes = await axios.get(`http://localhost:3000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
                         break;
                     case "2weeks":
-                        humidRes = await axios.get(`http://localhost:5000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
+                        humidRes = await axios.get(`http://localhost:3000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
                         break;
                     case "month":
-                        humidRes = await axios.get(`http://localhost:5000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
+                        humidRes = await axios.get(`http://localhost:3000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
                         break;
                 }
                 
