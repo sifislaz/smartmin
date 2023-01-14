@@ -1,5 +1,6 @@
 <template>
     <v-sheet class="bg-primary pa-12 h-100" rounded>
+        <div v-show="fail"><v-alert type="error" class="mb-2 w-25 mx-auto d-none d-lg-flex">Username and Password don't match. Please try again.</v-alert></div>
         <v-card class="ma-auto w-25 pa-5 d-none d-lg-block" elevation="12" rounded>
             <v-img src="../assets/logo2.png" max-width="200px" class="mx-auto pa-2"></v-img>
             <v-form v-model="form" @submit.prevent="onSubmit">
@@ -17,6 +18,7 @@
                 
             </v-form>
         </v-card>
+        <div v-show="fail"><v-alert type="error" :show="fail" class="mb-2 w-50 mx-auto d-none d-md-flex d-lg-none">Username and Password don't match. Please try again.</v-alert></div>
         <v-card class="ma-auto w-50 pa-5 d-none d-md-block d-lg-none" elevation="12" rounded>
             <v-img src="../assets/logo2.png" max-width="200px" class="mx-auto pa-2"></v-img>
             <v-form v-model="form" @submit.prevent="onSubmit">
@@ -33,6 +35,7 @@
                 
             </v-form>
         </v-card>
+        <div v-show="fail"><v-alert type="error" :show="fail" class="mb-2 w-100 d-md-none mx-auto">Username and Password don't match. Please try again.</v-alert></div>
         <v-card class="ma-auto w-100 pa-5 d-md-none" elevation="12" rounded>
             <v-img src="../assets/logo2.png" max-width="200px" class="mx-auto pa-2"></v-img>
             <v-form v-model="form" @submit.prevent="onSubmit">
@@ -65,7 +68,8 @@ export default {
         username:null,
         password:null,
         loading:false,
-        sh:false
+        sh:false,
+        fail: false
     }),
 
     methods: {
@@ -78,12 +82,13 @@ export default {
                     localStorage.setItem('jwt','sussyBaka');
                     this.$emit('loggedIn');
                     this.$router.push('alerts');
+                    this.fail = false;
                     this.loading = false;
                 }
                 else{
                     this.username="";
                     this.password="";
-                    alert("Wrong Input! Try again");
+                    this.fail = true;
                     this.loading = false;
                 }
             }
