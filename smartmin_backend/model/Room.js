@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const roomSchema = new Schema({
     name: {type:String, required: true},
-    location: String
+    location: String,
+    sensors: [{sensId : String, sensType: String, sensValue: Boolean}]
 })
 
 module.exports = mongoose.model('Room', roomSchema);
