@@ -65,7 +65,7 @@ router.beforeEach((to, _, next) => {
         else if(to.matched.some(record=>record.meta.logout)){
             localStorage.removeItem('jwt');
             next({
-                path:'login'
+                path:'/'
             });
         }
         else{
@@ -77,7 +77,7 @@ router.beforeEach((to, _, next) => {
             next();
         }
         else{
-            next({name:'alerts'});
+            next({name:'home'});
         }
     }
     else{
