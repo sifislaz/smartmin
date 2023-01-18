@@ -24,9 +24,9 @@ const handelLogout = async (req, res) => {
         const result = await foundUser.save();
         res.clearCookie('jwt', 
         { 
-        // httpOnly: true, 
-        // sameSite: 'None', 
-        // secure: true
+        httpOnly: true, 
+        sameSite: 'None', 
+        secure: true
         });
         return res.sendStatus(204);//no content
     }catch(err){
