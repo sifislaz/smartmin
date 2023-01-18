@@ -31,10 +31,15 @@ export default{
     },
 
     data: ()=>({
-        alerts:[]
+        alerts:[],
+        timer: null
     }),
     async created(){
-        this.fetchAlerts()
+        this.fetchAlerts();
+        this.timer = setInterval(this.fetchAlerts, 60*1000*2);  // fetch every 2 minutes
+    },
+    beforeUnmount(){
+        this.cancelUpdate();
     },
     methods:{
         async fetchAlerts(){
@@ -46,6 +51,9 @@ export default{
             catch(e){
                 console.log(e);
             }
+        },
+        cancelUpdate(){
+            clearInterval(this.timer);
         }
     }
 
