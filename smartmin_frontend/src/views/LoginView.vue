@@ -1,4 +1,5 @@
 <template>
+    <NavPanel/>
     <v-sheet class="bg-primary pa-12 h-100" rounded>
         <div v-show="fail"><v-alert type="error" class="mb-2 w-25 mx-auto d-none d-lg-flex">Username and Password don't match. Please try again.</v-alert></div>
         <v-card class="ma-auto w-25 pa-5 d-none d-lg-block" elevation="12" rounded>
@@ -54,15 +55,20 @@
             </v-form>
         </v-card>
     </v-sheet>
-
-    
+    <FooterBar/>
 </template>
 
 <script>
+import NavPanel from '@/components/NavPanel';
+import FooterBar from '@/components/FooterBar';
 import axios from 'axios';
 
 export default {
     name: 'LoginView',
+    components:{
+        NavPanel,
+        FooterBar
+    },
     data: ()=>({
         form:false,
         username:null,
