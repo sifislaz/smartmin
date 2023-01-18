@@ -22,7 +22,7 @@ router.route('/room/')
 
 router.route('/room/:roomId/')
     .get(roomController.getRoom)
-
+    .post(roomController.setRoomSensors)
 
 router.route('/alerts')
     .get(controller.getAlerts)

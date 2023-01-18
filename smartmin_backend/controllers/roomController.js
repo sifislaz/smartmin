@@ -60,11 +60,28 @@ const deleteRoom = async(req, res) =>{
 
 
 
+const setRoomSensors = async (req, res) =>{
+    try{
+        let room = await Room.findById(req.params.roomId).exec();
+        room.sensors = req.body.sensors;
+        const newRoom =await room.save();
+
+        res.status(200).json(newRoom)
+
+    }
+    catch(err){
+        res.status(500).json({ 'message': err.message })
+    } 
+};
+
+
+
 
 module.exports = {
     getAllRooms,
     createNewRoom,
     updateRoom,
     deleteRoom,
-    getRoom
+    getRoom,
+    setRoomSensors
 }

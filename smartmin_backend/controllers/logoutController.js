@@ -4,7 +4,7 @@ const Users =  require("../model/User");
 const handelLogout = async (req, res) => {
     //also delete access token of frontend @ sifis
     const cookies = req.cookies;
-    console.log(cookies);
+    //console.log(cookies);
     if (!cookies?.jwt) return res.sendStatus(204);
 
     const refreshToken = cookies.jwt;
