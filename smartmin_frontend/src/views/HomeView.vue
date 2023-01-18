@@ -1,7 +1,7 @@
 <template>
   <NavPanel/>
   <div class="bg-bgLight h-100">
-    <v-expansion-panels v-model="panel" multiple>
+    <v-expansion-panels v-model="panel" multiple class="w-50 mx-auto">
       <v-expansion-panel v-for="room in rooms" :key="room.id" :value="room.name">
         <v-expansion-panel-title class="bg-bgLight font-weight-medium">{{ room.name }}</v-expansion-panel-title>
         <v-expansion-panel-text class="bg-secondary">
