@@ -4,46 +4,61 @@ const Room = require("../model/Room");
 const Alert = require("../model/Alert");
 
 
-const checkTempValue = (temp)=>{
+const checkTempValue = async (temp)=>{
     let idealTemp = 22;
     let moderateDeviation = 5;
     let severeDeviation = 15;
     let message = {};
+    let roomName;
+
+    try{
+        roomName = await Room.findById(temp.origin.room, 'name').lean().exec();
+        roomName = roomName.name;
+    }catch(err){
+        console.log(err);}
+    
+    console.log(Math.abs(temp.reading.value - idealTemp), Math.abs(temp.reading.value - idealTemp) < moderateDeviation );
+        
     if(Math.abs(temp.reading.value - idealTemp) < moderateDeviation){
+        console.log(1);
         return false;
     }
-    else if(moderateDeviation<=(temp.reading.value - idealTemp)<severeDeviation){  // moderate heat
+    else if(moderateDeviation<=(temp.reading.value - idealTemp)&& (temp.reading.value - idealTemp)<severeDeviation){  // moderate heat
+        console.log(2);
         message.severity = 'Medium';
-        message.origin = temp.origin.room;
-        message.title = `High temperature of ${temp.reading.value} °C, in ${temp.origin.room}.`;
-        message.body = `Sensor ${temp.origin.sensorId} has reported a tempeture of ${temp.reading.value} °C in  ${temp.origin.room}.The heat might be uncomfortable for some.`
+        message.origin = roomName;
+        message.title = `High temperature`;
+        message.body = `Sensor ${temp.origin.sensorId} has reported a tempeture of ${temp.reading.value} °C in `
         createAlert(message);
         //doStuff()
         return true;
     }
     else if(moderateDeviation<=(idealTemp-temp.reading.value)<severeDeviation){  // moderate cold
+        console.log(3);
         message.severity = 'Medium';
-        message.origin = temp.origin.room;
-        message.title = `Low temperature of ${temp.reading.value} °C, in ${temp.origin.room}.`;
-        message.body = `Sensor ${temp.origin.sensorId} has reported a tempeture of ${temp.reading.value} °C in  ${temp.origin.room}.The cold might be uncomfortable for some.`
+        message.origin = roomName;
+        message.title = `Low temperature`;
+        message.body = `Sensor ${temp.origin.sensorId} has reported a tempeture of ${temp.reading.value} °C in `
         createAlert(message);
         //doStuff()
         return true;
     }
     else if((temp.reading.value - idealTemp)>= severeDeviation){  // severe heat
+        console.log(4);
         message.severity = 'Hazard';
-        message.origin = temp.origin.room;
-        message.title = `Extremely high temperature of ${temp.reading.value} °C, in ${temp.origin.room}.`;
-        message.body = `Sensor ${temp.origin.sensorId} has reported a tempeture of ${temp.reading.value} °C in  ${temp.origin.room}.The heat might be dangerous for some.`
+        message.title = `Extremely high temperature`;
+        message.origin = roomName;
+        message.body = `Sensor ${temp.origin.sensorId} has reported a tempeture of ${temp.reading.value} °C in `
         createAlert(message);
         //doStuff()
         return true;
     }
     else if((idealTemp-temp.reading.value) >= severeDeviation){  // severe cold
+        console.log(5);
         message.severity = 'Hazard';
-        message.origin = temp.origin.room;
-        message.title = `Extremely low temperature of ${temp.reading.value} °C, in ${temp.origin.room}.`;
-        message.body = `Sensor ${temp.origin.sensorId} has reported a tempeture of ${temp.reading.value} °C in  ${temp.origin.room}.The cold might be dangerous for some.`
+        message.origin = roomName;
+        message.title = `Extremely low temperature`;
+        message.body = `Sensor ${temp.origin.sensorId} has reported a tempeture of ${temp.reading.value} °C in `
         createAlert(message);
         //doStuff()
         return true;
@@ -95,7 +110,7 @@ const checkHumValue = (hum)=>{
 
 const createAlert = async (info) =>  {
     try{
-        const result = await Alert.create({info})
+        const result = await Alert.create(info)
     }catch(err){
         console.log(err);
     }

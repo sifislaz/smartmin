@@ -7,26 +7,31 @@ const moment = require("moment");
 
 const addNewTempReading = async (req,res)=>{
     var { reading, origin} = req.body;
-
-    origin.room = await Room.findById( req.params.roomId).lean().exec();
-    if(!origin.room){
-        res.status(400).json({ 'bad request': 'No such room exists' });
-        return
-    }
+ 
     
     try {
+        
+        origin.room = await Room.findById( req.params.roomId).lean().exec();
+        if(!origin.room){
+            res.status(400).json({ 'bad request': 'No such room exists' });
+            return
+        }
+
         const result = await Temperature.create({
             "reading": reading,
             "origin": origin
         });
         
          //const alert1 =  alert.checkTempValue(), https://vuetifyjs.com/en/components/badges/
-        if(alertController.checkTempValue(result)===false)
-        res.status(201).json({ 'success': `New temp reading of ${reading.value} created!` });
-        else
+        const alert = await alertController.checkTempValue(result);
+        if(alert===false){        
+            res.status(201).json({ 'success': `New temp reading of ${reading.value} created!` });
+    }else{
         res.status(201).json({ 
-            'success': `New temp reading of ${reading.value} created!`,
+        'success': `New temp reading of ${reading.value} created!`,
         'warning': 'Alert created!'});
+        }
+        
        
     } catch (err) {
         res.status(500).json({ 'message': err.message });

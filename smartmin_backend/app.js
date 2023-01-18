@@ -51,11 +51,10 @@ app.use('/logout', require('./routes/logout'))
 
 
 //verify aprooved users 
-app.use(verifyJWT)
+//app.use(verifyJWT)
 
 
 app.use('/data', require('./routes/dataRoutes'))
-
 
 
 

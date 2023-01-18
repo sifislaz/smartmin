@@ -9,7 +9,7 @@ const alertSchema = new Schema({
     body:{type:String, required:true},
     severity:{type:String, required:true, default:"Good"},
     date:{type:Number, default:Date.now},
-    origin:{type:mongoose.Schema.Types.ObjectId, ref:'Room', required:true}
+    origin:{type:String, required:true}
 })
 
 module.exports = mongoose.model('Alert', alertSchema);
