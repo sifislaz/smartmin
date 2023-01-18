@@ -86,7 +86,7 @@ export default{
         async fetchContent(id){
             let room = null;
             try{
-                room = await axios.get(`http://localhost:3000/rooms/${id}`);
+                room = await axios.get(`http://localhost:3000/rooms/${id}`, {headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                 this.roomName = room.data.name;
                 this.sensors = room.data.sensors;
             }
@@ -100,19 +100,19 @@ export default{
             try{
                 switch(range){
                     case "today":
-                        tempRes = await axios.get(`http://localhost:3000/data/room/${roomId}/temp?timeNumber=1&timeScale=days`);
+                        tempRes = await axios.get(`http://localhost:3000/data/room/${roomId}/temp?timeNumber=1&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                     case "3day":
-                        tempRes = await axios.get(`http://localhost:3000/data/room/${roomId}/temp?timeNumber=3&timeScale=days`);
+                        tempRes = await axios.get(`http://localhost:3000/data/room/${roomId}/temp?timeNumber=3&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                     case "week":
-                        tempRes = await axios.get(`http://localhost:3000/data/room/${roomId}/temp?timeNumber=7&timeScale=days`);
+                        tempRes = await axios.get(`http://localhost:3000/data/room/${roomId}/temp?timeNumber=7&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                     case "2weeks":
-                        tempRes = await axios.get(`http://localhost:3000/data/room/${roomId}/temp?timeNumber=14&timeScale=days`);
+                        tempRes = await axios.get(`http://localhost:3000/data/room/${roomId}/temp?timeNumber=14&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                     case "month":
-                        tempRes = await axios.get(`http://localhost:3000/data/room/${roomId}/temp?timeNumber=30&timeScale=days`);
+                        tempRes = await axios.get(`http://localhost:3000/data/room/${roomId}/temp?timeNumber=30&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                 }
                 
@@ -132,19 +132,19 @@ export default{
             try{
                 switch(range){
                     case "today":
-                        humidRes = await axios.get(`http://localhost:3000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
+                        humidRes = await axios.get(`http://localhost:3000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                     case "3day":
-                        humidRes = await axios.get(`http://localhost:3000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
+                        humidRes = await axios.get(`http://localhost:3000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                     case "week":
-                        humidRes = await axios.get(`http://localhost:3000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
+                        humidRes = await axios.get(`http://localhost:3000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                     case "2weeks":
-                        humidRes = await axios.get(`http://localhost:3000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
+                        humidRes = await axios.get(`http://localhost:3000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                     case "month":
-                        humidRes = await axios.get(`http://localhost:3000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
+                        humidRes = await axios.get(`http://localhost:3000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                 }
                 

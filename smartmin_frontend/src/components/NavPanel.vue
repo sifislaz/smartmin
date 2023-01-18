@@ -11,7 +11,7 @@
             </template>
             <v-list-item v-for="(room,i) in rooms" :key="i" :title="room.title" :value="room" :to="`/rooms/${room.id}`" :prepend-icon="room.icon" class="text-white"></v-list-item>
         </v-list-group>
-        <v-list-item v-show="admin" prepend-icon="mdi-logout" title="Log Out" value="logout" to="/logout" class="text-white"></v-list-item>
+        <v-list-item v-show="admin" prepend-icon="mdi-logout" title="Log Out" value="logout" to="/logout" class="text-white" @click="logout"></v-list-item>
     </v-list>
   </v-navigation-drawer>
 
@@ -23,6 +23,7 @@
 </template>
   
   <script>
+    import axios from 'axios';
     export default {
       data: () => ({
         drawer: false,
@@ -39,6 +40,18 @@
       created(){
         if(localStorage.getItem('jwt')==null) this.admin = false;
         else this.admin = true;
+      },
+      methods:{
+        async logout(){
+          try{
+            const logout = await axios.get('http://localhost:3000/logout',{withCredentials:true});
+            console.log(logout.data);
+          }
+          catch(e){
+            console.log(e);
+          }
+          
+        }
       }
     }
   </script>
