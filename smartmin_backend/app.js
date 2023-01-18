@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const configEnv = require("dotenv").config({ path: './config.env' });
 const verifyJWT = require("./middleware/verifyJWT");
+const credentials = require("./middleware/credentials");
 const cookieParser = require("cookie-parser");
-
 //create out express app
 const app = express()
 
@@ -23,9 +23,9 @@ mongoose.connect(uri,
 .catch((error) => console.log(error))
 
 //Handle CORS + middleware
+app.use(credentials)
 app.use(function(req, res, next){
     
-    res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Credentials", true)
     res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE"); 
     res.header("Access-Control-Allow-Headers", "auth-token, Origin, X-Requested-With, Content-Type, Accept");
