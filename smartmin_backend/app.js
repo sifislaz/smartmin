@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const configEnv = require("dotenv").config({ path: './config.env' });
 const verifyJWT = require("./middleware/verifyJWT");
 const cookieParser = require("cookie-parser");
+
 //create out express app
 const app = express()
 
@@ -26,7 +27,7 @@ app.use(function(req, res, next){
     
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Credentials", true)
-    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE"); // If using .fetch and not axios
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE"); 
     res.header("Access-Control-Allow-Headers", "auth-token, Origin, X-Requested-With, Content-Type, Accept");
     
     next();
