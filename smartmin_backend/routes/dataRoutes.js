@@ -1,16 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const controller  = require('../controllers/controller');
+const dataController  = require('../controllers/dataController');
+const humidityController  = require('../controllers/humidityController');
+const temperatureController  = require('../controllers/temperatureController');
 const roomController  = require('../controllers/roomController');
 
 
 router.route('/room/:roomId/temp')
-    .post(controller.addNewTempReading)
-    .get(controller.getTempReading);
+    .post(temperatureController.addNewTempReading)
+    .get(temperatureController.getTempReading);
 
 router.route('/room/:roomId/hum')
-    .post(controller.addNewHumReading)
-    .get(controller.getHumReading);
+    .post(humidityController.addNewHumReading)
+    .get(humidityController.getHumReading);
 
 
 
@@ -25,7 +27,7 @@ router.route('/room/:roomId/')
     .post(roomController.setRoomSensors)
 
 router.route('/alerts')
-    .get(controller.getAlerts)
+    .get(dataController.getAlerts)
     // .post();
 
 /*

@@ -17,13 +17,13 @@ const checkTempValue = async (temp)=>{
     }catch(err){
         console.log(err);}
     
-    console.log(Math.abs(temp.reading.value - idealTemp), Math.abs(temp.reading.value - idealTemp) < moderateDeviation );
+    //console.log(Math.abs(temp.reading.value - idealTemp), Math.abs(temp.reading.value - idealTemp) < moderateDeviation );
         
     if(Math.abs(temp.reading.value - idealTemp) < moderateDeviation){
         console.log(1);
         return false;
     }
-    else if(moderateDeviation<=(temp.reading.value - idealTemp)&& (temp.reading.value - idealTemp)<severeDeviation){  // moderate heat
+    else if(((idealTemp + moderateDeviation)<=temp.reading.value) && (temp.reading.value < (idealTemp + severeDeviation))){  // moderate heat
         console.log(2);
         message.severity = 'Medium';
         message.origin = roomName;
@@ -33,7 +33,7 @@ const checkTempValue = async (temp)=>{
         //doStuff()
         return true;
     }
-    else if(moderateDeviation<=(idealTemp-temp.reading.value)<severeDeviation){  // moderate cold
+    else if((temp.reading.value <= (idealTemp - moderateDeviation))  && ((idealTemp - severeDeviation) < temp.reading.value)){  // moderate cold
         console.log(3);
         message.severity = 'Medium';
         message.origin = roomName;
@@ -43,7 +43,7 @@ const checkTempValue = async (temp)=>{
         //doStuff()
         return true;
     }
-    else if((temp.reading.value - idealTemp)>= severeDeviation){  // severe heat
+    else if((idealTemp + severeDeviation) <=(temp.reading.value)){  // severe heat
         console.log(4);
         message.severity = 'Hazard';
         message.title = `Extremely high temperature`;
@@ -53,7 +53,7 @@ const checkTempValue = async (temp)=>{
         //doStuff()
         return true;
     }
-    else if((idealTemp-temp.reading.value) >= severeDeviation){  // severe cold
+    else if((temp.reading.value)<= (idealTemp - severeDeviation)) {  // severe cold
         console.log(5);
         message.severity = 'Hazard';
         message.origin = roomName;

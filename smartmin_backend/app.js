@@ -5,7 +5,8 @@ const configEnv = require("dotenv").config({ path: './config.env' });
 const verifyJWT = require("./middleware/verifyJWT");
 const credentials = require("./middleware/credentials");
 const cookieParser = require("cookie-parser");
-const controller  = require('./controllers/controller');
+
+const dataController  = require('./controllers/dataController');
 
 //create out express app
 const app = express()
@@ -40,7 +41,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 //homepage
-app.get("/", controller.getCurrentData);
+app.get("/", dataController.getCurrentData);
 
 
 //log, in & out 
