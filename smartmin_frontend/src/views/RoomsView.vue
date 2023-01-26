@@ -86,7 +86,7 @@ export default{
         async fetchContent(id){
             let room = null;
             try{
-                room = await axios.get(`http://localhost:3000/rooms/${id}`, {headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
+                room = await axios.get(`http://localhost:3000/data/room/${id}`, {headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                 this.roomName = room.data.name;
                 this.sensors = room.data.sensors;
             }
