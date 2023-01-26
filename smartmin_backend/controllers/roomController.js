@@ -13,7 +13,8 @@ const getAllRooms = async (req,res) =>{
 const getRoom = async(req, res) =>{
     try{
         const result = await Room.findOne({'name': req.params.roomId}).lean().exec();
-        res.status(200).json(result)
+        if(!result) return  res.status(400).json({'Bad Request':'No room with that name exists'});
+        return res.status(200).json(result)
     }
     catch(err){
         res.status(500).json({ 'message': err.message })

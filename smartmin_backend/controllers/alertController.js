@@ -16,15 +16,11 @@ const checkTempValue = async (temp)=>{
         roomName = roomName.name;
     }catch(err){
         console.log(err);}
-    
-    //console.log(Math.abs(temp.reading.value - idealTemp), Math.abs(temp.reading.value - idealTemp) < moderateDeviation );
         
     if(Math.abs(temp.reading.value - idealTemp) < moderateDeviation){
-        console.log(1);
         return false;
     }
     else if(((idealTemp + moderateDeviation)<=temp.reading.value) && (temp.reading.value < (idealTemp + severeDeviation))){  // moderate heat
-        console.log(2);
         message.severity = 'Medium';
         message.origin = roomName;
         message.title = `High temperature`;
@@ -34,7 +30,6 @@ const checkTempValue = async (temp)=>{
         return true;
     }
     else if((temp.reading.value <= (idealTemp - moderateDeviation))  && ((idealTemp - severeDeviation) < temp.reading.value)){  // moderate cold
-        console.log(3);
         message.severity = 'Medium';
         message.origin = roomName;
         message.title = `Low temperature`;
@@ -44,7 +39,6 @@ const checkTempValue = async (temp)=>{
         return true;
     }
     else if((idealTemp + severeDeviation) <=(temp.reading.value)){  // severe heat
-        console.log(4);
         message.severity = 'Hazard';
         message.title = `Extremely high temperature`;
         message.origin = roomName;
@@ -54,7 +48,6 @@ const checkTempValue = async (temp)=>{
         return true;
     }
     else if((temp.reading.value)<= (idealTemp - severeDeviation)) {  // severe cold
-        console.log(5);
         message.severity = 'Hazard';
         message.origin = roomName;
         message.title = `Extremely low temperature`;
@@ -65,44 +58,56 @@ const checkTempValue = async (temp)=>{
     }
 }
 
-const checkHumValue = (hum)=>{
+const checkHumValue =  async (hum)=>{
     let idealRH= 50;
     let moderateDeviation = 10;
     let severeDeviation = 25;
     let message = {};
+    let roomName;
+
+    try{
+        roomName = await Room.findById(hum.origin.room, 'name').lean().exec();
+        roomName = roomName.name;
+    }catch(err){
+        console.log(err);}
+        
     if(Math.abs(hum.reading.value - idealRH) < moderateDeviation){
         return false;
     }
-    else if(moderateDeviation<=(hum.reading.value - idealRH)<severeDeviation){  // moderate humidity
-        message.severity = "Medium";
-        message.origin = hum.origin.room;
-        message.title = `High humidity of ${hum.reading.value} %, in ${hum.origin.room}`;
-        message.body = `Sensor ${hum.origin.sensorId} has reported a humidity of ${hum.reading.value} % in ${hum.origin.room}.`
+    else if(((idealRH + moderateDeviation)<=hum.reading.value) && (hum.reading.value < (idealRH + severeDeviation))){  // moderate humidity
+        message.severity = 'Medium';
+        message.origin = roomName;
+        message.title = `High humidity`;
+        message.body = `Sensor ${hum.origin.sensorId} has reported a humidity reading of ${hum.reading.value} RH in `
         createAlert(message);
+        //doStuff()
         return true;
     }
-    else if(moderateDeviation<=(idealRH-hum.reading.value)<severeDeviation){  // moderate dryness
-        message.severity = "Medium";
-        message.origin = hum.origin.room;
-        message.title = `Low humidity of ${hum.reading.value} %, in ${hum.origin.room}`;
-        message.body = `Sensor ${hum.origin.sensorId} has reported a humidity of ${hum.reading.value} % in ${hum.origin.room}.`;
+    else if((hum.reading.value <= (idealRH - moderateDeviation))  && ((idealRH - severeDeviation) < hum.reading.value)){  // moderate dryness
+        message.severity = 'Medium';
+        message.origin = roomName;
+        message.title = `Low humidity`;
+        message.body = `Sensor ${hum.origin.sensorId} has reported a humidity reading of ${hum.reading.value} RH in `
         createAlert(message);
+        //doStuff()
         return true;
     }
-    else if((hum.reading.value - idealRH)>= severeDeviation){  // severe humidity
-        message.severity = "Hazard";
-        message.origin = hum.origin.room;
-        message.title = `High humidity of ${hum.reading.value} %, in ${hum.origin.room}`;
-        message.body = `Sensor ${hum.origin.sensorId} has reported a humidity of ${hum.reading.value} % in ${hum.origin.room}.`
+    else if((idealRH + severeDeviation) <=(hum.reading.value)){  // severe humidity
+        message.severity = 'Hazard';
+        message.title = `Extremely high humidity`;
+        message.origin = roomName;
+        message.body = `Sensor ${hum.origin.sensorId} has reported a tempeture of ${hum.reading.value} RH in `
         createAlert(message);
+        //doStuff()
         return true;
     }
-    else if((idealRH-hum.reading.value) >= severeDeviation){  // severe dryness
-        message.severity = "Hazard";
-        message.origin = hum.origin.room;
-        message.title = `Low humidity of ${hum.reading.value} %, in ${hum.origin.room}`;
-        message.body = `Sensor ${hum.origin.sensorId} has reported a humidity of ${hum.reading.value} % in ${hum.origin.room}.`;
+    else if((hum.reading.value)<= (idealRH - severeDeviation)) {  // severe dryness
+        message.severity = 'Hazard';
+        message.origin = roomName;
+        message.title = `Extremely low humidity`;
+        message.body = `Sensor ${hum.origin.sensorId} has reported a  humidity reading of ${hum.reading.value} RH in `
         createAlert(message);
+        //doStuff()
         return true;
     }
 }

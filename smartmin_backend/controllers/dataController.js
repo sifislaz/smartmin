@@ -23,6 +23,18 @@ const getAlerts = async (req, res)=>{
     
 }
 
+const readAlert = async(req,res)=>{
+    try{
+        let result = await Alert.findById(req.params.alertId);
+        result.isRead = true;
+        result = await result.save();
+        res.status(200).json(result)
+
+    }catch(err){
+        res.status(500).json({'message':err.message});
+    }
+}
+
 const getCurrentData = async (req,res) =>{
 
     try{
@@ -54,5 +66,6 @@ const getCurrentData = async (req,res) =>{
 
 module.exports = {
     getAlerts,
+    readAlert,
     getCurrentData
 }

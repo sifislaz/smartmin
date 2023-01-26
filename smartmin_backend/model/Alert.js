@@ -9,7 +9,8 @@ const alertSchema = new Schema({
     body:{type:String, required:true},
     severity:{type:String, required:true, default:"Good"},
     date:{type:Number, default:Date.now},
-    origin:{type:String, required:true}
+    origin:{type:String, required:true},
+    isRead:{type:Boolean, default:false}
 })
 
 module.exports = mongoose.model('Alert', alertSchema);

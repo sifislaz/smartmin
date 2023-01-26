@@ -24,11 +24,14 @@ router.route('/room/')
 
 router.route('/room/:roomId/')
     .get(roomController.getRoom)
-    .post(roomController.setRoomSensors)
+    .post(roomController.setRoomSensors);
 
 router.route('/alerts')
-    .get(dataController.getAlerts)
-    // .post();
+    .get(dataController.getAlerts);
+
+    router.route('/alerts/:alertId')
+    .put(dataController.readAlert);
+    
 
 /*
 router.route('/alerts/room/:roomId')
