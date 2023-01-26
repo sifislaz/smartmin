@@ -16,8 +16,8 @@ const app = express()
 mongoose.set('strictQuery', true);
 const uri = process.env.DB_URI
 mongoose.connect(uri,
-    //{dbName: 'SmartminDB'},
-     {dbName: 'test'},
+    {dbName: 'SmartminDB'},
+    // {dbName: 'test'},
 
     {
     useNewUrlParser: true,
@@ -31,7 +31,7 @@ app.use(function(req, res, next){
     
     res.header("Access-Control-Allow-Credentials", true)
     res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE"); 
-    res.header("Access-Control-Allow-Headers", "auth-token, Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "auth-token, Origin, X-Requested-With, Content-Type, Accept, authorization");
     
     next();
 })

@@ -12,7 +12,7 @@ const getAllRooms = async (req,res) =>{
 
 const getRoom = async(req, res) =>{
     try{
-        const result = await Room.findOne({'name': req.params.roomId}).lean().exec();
+        const result = await Room.findById(req.params.roomId).lean().exec();
         if(!result) return  res.status(400).json({'Bad Request':'No room with that name exists'});
         return res.status(200).json(result)
     }
