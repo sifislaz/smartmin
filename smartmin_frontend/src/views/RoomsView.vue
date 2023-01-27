@@ -14,7 +14,7 @@
                         <h2 class="text-secondary text-center">Actuators</h2>
                         <div v-for="sensor of sensors" :key="sensor.id" class="bg-primary rounded-lg pa-4 my-2 d-flex justify-space-between align-center w-25 mx-auto">
                             <span class="text-white text-h5">{{sensor.type}}</span>
-                            <div><v-switch :model-value="sensor.value" color="switchGreen" inset hide-details @change="updateSensor(sensor.id,sensor.value)"></v-switch></div>
+                            <div><v-switch v-model="switches" :value="sensor.type" color="switchGreen" inset hide-details @change="updateSensor(sensor.id,sensor.value)"></v-switch></div>
                         </div>
                     </v-window-item>
                     <v-window-item value="temp">
@@ -60,6 +60,7 @@ export default{
         tab: null,
         sensors:[],
         temp:[],
+        switches:[],
         humid:[],
         roomName:null,
         avgTemp:null,
@@ -84,10 +85,16 @@ export default{
     methods:{
         async fetchContent(id){
             let room = null;
+            this.switches = [];
             try{
                 room = await axios.get(`http://localhost:5000/rooms/${id}`);
                 this.roomName = room.data.name;
                 this.sensors = room.data.sensors;
+                for(let sensor of this.sensors){
+                    if(sensor.value){
+                        this.switches.push(sensor.type);
+                    }
+                }
             }
             catch(e){
                 console.log(e);
