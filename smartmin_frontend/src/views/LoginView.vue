@@ -1,7 +1,7 @@
 <template>
     <NavPanel/>
     <v-sheet class="bg-primary pa-12 h-100" rounded>
-        <div v-show="fail"><v-alert type="error" class="mb-2 w-25 mx-auto d-none d-lg-flex">Username and Password don't match. Please try again.</v-alert></div>
+        <div v-show="fail"><v-alert type="error" class="mb-2 w-25 mx-auto d-none d-lg-flex">{{ alert }}</v-alert></div>
         <v-card class="ma-auto w-25 pa-5 d-none d-lg-block" elevation="12" rounded>
             <v-img src="../assets/logo2.png" max-width="200px" class="mx-auto pa-2"></v-img>
             <v-form v-model="form" @submit.prevent="onSubmit">
@@ -19,7 +19,7 @@
                 
             </v-form>
         </v-card>
-        <div v-show="fail"><v-alert type="error" :show="fail" class="mb-2 w-50 mx-auto d-none d-md-flex d-lg-none">Username and Password don't match. Please try again.</v-alert></div>
+        <div v-show="fail"><v-alert type="error" :show="fail" class="mb-2 w-50 mx-auto d-none d-md-flex d-lg-none">{{ alert }}</v-alert></div>
         <v-card class="ma-auto w-50 pa-5 d-none d-md-block d-lg-none" elevation="12" rounded>
             <v-img src="../assets/logo2.png" max-width="200px" class="mx-auto pa-2"></v-img>
             <v-form v-model="form" @submit.prevent="onSubmit">
@@ -36,7 +36,7 @@
                 
             </v-form>
         </v-card>
-        <div v-show="fail"><v-alert type="error" :show="fail" class="mb-2 w-100 d-md-none mx-auto">Username and Password don't match. Please try again.</v-alert></div>
+        <div v-show="fail"><v-alert type="error" :show="fail" class="mb-2 w-100 d-md-none mx-auto">{{ alert }}</v-alert></div>
         <v-card class="ma-auto w-100 pa-5 d-md-none" elevation="12" rounded>
             <v-img src="../assets/logo2.png" max-width="200px" class="mx-auto pa-2"></v-img>
             <v-form v-model="form" @submit.prevent="onSubmit">
@@ -75,29 +75,31 @@ export default {
         password:null,
         loading:false,
         sh:false,
-        fail: false
+        fail: false,
+        alert:"Authentication Failed. Please try again."
     }),
 
     methods: {
         async onSubmit(){
             if(!this.form) return;
             this.loading = true;
-            const users = await axios(`http://localhost:5000/users?username=${this.username}`);
-            if(users.data.length!==0){
-                if(this.username===users.data[0].username && this.password === users.data[0].password){
-                    localStorage.setItem('jwt','sussyBaka');
-                    this.$emit('loggedIn');
-                    this.$router.push('alerts');
-                    this.fail = false;
-                    this.loading = false;
-                }
-                else{
-                    this.username="";
-                    this.password="";
-                    this.fail = true;
-                    this.loading = false;
-                }
+            try{
+                const users = await axios.post(`http://localhost:3000/auth`,{user:this.username, pwd:this.password},{withCredentials:true});
+                localStorage.setItem('jwt',users.data.accessToken);
+                this.$emit('loggedIn');
+                this.$router.push('/');
+                this.fail = false;
+                this.loading = false;
             }
+            catch(e){
+                console.log(e);
+                this.username="";
+                this.password="";
+                this.fail = true;
+                this.loading = false;
+            }
+            
+            
             
         },
         required(v){
