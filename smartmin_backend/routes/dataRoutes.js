@@ -7,24 +7,24 @@ const roomController  = require('../controllers/roomController');
 const verifyJWT = require("../middleware/verifyJWT");
 
 router.route('/room/:roomId/temp')
-    .post(temperatureController.addNewTempReading)
+    .post(verifyJWT,temperatureController.addNewTempReading)
     .get(verifyJWT,temperatureController.getTempReading);
 
 router.route('/room/:roomId/hum')
-    .post(humidityController.addNewHumReading)
+    .post(verifyJWT,humidityController.addNewHumReading)
     .get(verifyJWT,humidityController.getHumReading);
 
 
 
 router.route('/room/')
     .get(roomController.getAllRooms)
-    .post(roomController.createNewRoom)
-    .delete(roomController.deleteRoom)
-    .put(roomController.updateRoom);
+    .post(verifyJWT,roomController.createNewRoom)
+    .delete(verifyJWT,roomController.deleteRoom)
+    .put(verifyJWT,roomController.updateRoom);
 
 router.route('/room/:roomId/')
-    .get(roomController.getRoom)
-    .post(roomController.setRoomSensors);
+    .get(verifyJWT,roomController.getRoom)
+    .post(verifyJWT,roomController.setRoomSensors);
 
 router.route('/alerts')
     .get(verifyJWT,dataController.getAlerts);
