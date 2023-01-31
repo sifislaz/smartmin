@@ -49,12 +49,6 @@ app.use('/auth', require('./routes/auth'))
 app.use('/refresh', require('./routes/refresh'))
 app.use('/logout', require('./routes/logout'))
 
-
-
-
-//verify aprooved users 
-app.use(verifyJWT)
-
 //see data and change device state only if logged in
 app.use('/data', require('./routes/dataRoutes'))
 app.use('/device_state', require('./routes/device')) //change url

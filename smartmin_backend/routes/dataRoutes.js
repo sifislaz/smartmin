@@ -4,15 +4,15 @@ const dataController  = require('../controllers/dataController');
 const humidityController  = require('../controllers/humidityController');
 const temperatureController  = require('../controllers/temperatureController');
 const roomController  = require('../controllers/roomController');
-
+const verifyJWT = require("../middleware/verifyJWT");
 
 router.route('/room/:roomId/temp')
     .post(temperatureController.addNewTempReading)
-    .get(temperatureController.getTempReading);
+    .get(verifyJWT,temperatureController.getTempReading);
 
 router.route('/room/:roomId/hum')
     .post(humidityController.addNewHumReading)
-    .get(humidityController.getHumReading);
+    .get(verifyJWT,humidityController.getHumReading);
 
 
 
@@ -27,10 +27,9 @@ router.route('/room/:roomId/')
     .post(roomController.setRoomSensors);
 
 router.route('/alerts')
-    .get(dataController.getAlerts);
-
+    .get(verifyJWT,dataController.getAlerts);
     router.route('/alerts/:alertId')
-    .put(dataController.readAlert);
+    .put(verifyJWT,dataController.readAlert);
     
 
 /*
