@@ -53,7 +53,7 @@ app.use('/logout', require('./routes/logout'))
 
 
 //verify aprooved users 
-app.use(verifyJWT)
+//app.use(verifyJWT)
 
 //see data and change device state only if logged in
 app.use('/data', require('./routes/dataRoutes'))

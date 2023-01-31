@@ -6,21 +6,43 @@ const alertController = require("./alertController");
 const moment = require("moment");
 
 
-
-const getAlerts = async (req, res)=>{
+const getAlerts = async (req, res) =>{
+    let pageNumber = req.query.pageNumber; //1 index based
+    let pageSize = req.query.pageSize;
+    let unreadOnly = req.query.unreadOnly;
+    let result = {totalAlerts: undefined,totalPages: undefined, pageNumber: undefined, alerts: []};
     try{
-        const result = await Alert.find().lean().exec();
-        const alert = result.map(({_id,title,body,severity,date,origin})=>{
-            return {id:_id, title:title, body:body, severity: severity, date:date, origin:origin};
-        });
-        res.status(200).json({
-            "alert":alert
-        })
-    }
-    catch(err){
+        result.pageNumber = Number(pageNumber);
+        if(unreadOnly){
+            result.totalAlerts = await Alert.count({isRead: false});
+
+            if(result.totalAlerts === 0){result.totalPages = 1;}
+            else{result.totalPages = Math.ceil(result.totalAlerts/pageSize);}
+
+            if(pageNumber>result.totalPages){
+                return  res.status(400).json({'Bad Request':'Page number exciteds total pages'})
+            }
+
+            result.alerts = await Alert.find({isRead: false}).sort({date: 'desc'}).skip((pageNumber-1)*pageSize).limit(pageSize).lean().exec();
+        }
+        else{
+            result.totalAlerts = await Alert.count();
+
+            if(result.totalAlerts === 0){result.totalPages = 1;}
+            else{result.totalPages = Math.ceil(result.totalAlerts/pageSize);}
+
+            if(pageNumber>result.totalPages){
+                return  res.status(400).json({'Bad Request':'Page number exciteds total pages'})
+            }
+
+            result.alerts = await Alert.find().sort({date: 'desc'}).skip((pageNumber-1)*pageSize).limit(pageSize).lean().exec();   
+        }
+
+        res.status(200).json(result)
+    }catch(err){
         res.status(500).json({'message':err.message});
     }
-    
+
 }
 
 const readAlert = async(req,res)=>{

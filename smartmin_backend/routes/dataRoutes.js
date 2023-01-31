@@ -29,8 +29,9 @@ router.route('/room/:roomId/')
 router.route('/alerts')
     .get(dataController.getAlerts);
 
+
     router.route('/alerts/:alertId')
-    .put(dataController.readAlert);
+    .post(dataController.readAlert);
     
 
 /*
