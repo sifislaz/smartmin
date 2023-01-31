@@ -2,7 +2,7 @@ const Room = require("../model/Room");
 
 const changeDeviceState = async (req,res)=>{
     try{
-        room = await Room.findById(req.body.roomId).exec();
+       let room = await Room.findById(req.body.roomId).exec();
    
 
     if(!room){
