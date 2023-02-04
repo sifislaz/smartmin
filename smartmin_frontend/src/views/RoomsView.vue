@@ -93,7 +93,7 @@ export default{
             this.switches = [];
             this.fail = false;
             try{
-                room = await axios.get(`http://localhost:3000/data/room/${id}`, {headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
+                room = await axios.get(`http://localhost:3000/data/room/${this.roomId}`, {headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                 this.roomName = room.data.name;
                 this.sensors = room.data.sensors;
                 for(let sensor of this.sensors){
