@@ -179,8 +179,7 @@ export default{
             }
             const res = {id:sensorId, value:sensorValue, roomId:this.roomId}
             try{
-                //const upd = await axios.post(`http://localhost:3000/data/rooms/${roomId}`,res);
-                const upd = await axios.post(`http://localhost:5000/rooms/${this.roomId}/sensors/${sensorId}`,res);
+                const upd = await axios.post(`http://localhost:3000/data/rooms/${this.roomId}`,res,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                 this.fail = false;
                 console.log(upd);
             }
