@@ -57,11 +57,21 @@ const readAlert = async(req,res)=>{
     }
 }
 
+const readAllAlerts = async(req,res)=>{
+    try{
+        let result = await Alert.updateMany({}, {isRead:true});
+        res.status(200).json(result)
+
+    }catch(err){
+        console.log(err);
+        res.status(500).json({'message':err.message});
+    }
+}
+
 const getCurrentData = async (req,res) =>{
 
     try{
         let rooms = await Room.find({},'name accessibility').lean().exec();
-        //console.log(result);
         const result = [];
         for(let obj of rooms){
             let tempObj = {};
@@ -89,5 +99,6 @@ const getCurrentData = async (req,res) =>{
 module.exports = {
     getAlerts,
     readAlert,
+    readAllAlerts,
     getCurrentData
 }

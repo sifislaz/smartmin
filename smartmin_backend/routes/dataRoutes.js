@@ -27,9 +27,10 @@ router.route('/room/:roomId/')
     .post(verifyJWT,roomController.setRoomSensors);
 
 router.route('/alerts')
-    .get(verifyJWT,dataController.getAlerts);
+    .get(verifyJWT,dataController.getAlerts)
+    .post(verifyJWT,dataController.readAllAlerts);
 router.route('/alerts/:alertId')
-    .put(verifyJWT,dataController.readAlert);
+    .post(verifyJWT,dataController.readAlert);
     
 
 /*
