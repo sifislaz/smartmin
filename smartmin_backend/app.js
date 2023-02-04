@@ -51,7 +51,7 @@ app.use('/logout', require('./routes/logout'))
 
 //see data and change device state only if logged in
 app.use('/data', require('./routes/dataRoutes'))
-app.use('/device_state', require('./routes/device')) //change url
+app.use('/device/state', require('./routes/device'))
 
 
 //start server

@@ -5,13 +5,13 @@ require('dotenv').config({ path: '../config.env' });
 const handelRefreshToken = async (req, res) => {
     const cookies = req.cookies;
     console.log(cookies);
-    if (!cookies?.jwt) return res.sendStatus(401);
+    if (!cookies?.jwt) return res.status(401).json({"message":"Refresh token not found"});
 
     const refreshToken = cookies.jwt;
     const foundUser = await Users.findOne({'refreshToken': refreshToken}).exec();
     console.log(foundUser);
 
-    if (!foundUser) return res.sendStatus(403); //Forbidden 
+    if (!foundUser) return res.status(403).json({'message':'No user has this refresh token'}); //Forbidden 
 
     // evaluate jwt 
     jwt.verify(
@@ -26,7 +26,7 @@ const handelRefreshToken = async (req, res) => {
             const accessToken = jwt.sign(
                 { "username": foundUser.username },
                 process.env.ACCESS_TOKEN_SECRET,
-                { expiresIn: '5m' }
+                { expiresIn: '30m' }
             );
             res.json({accessToken});
         }

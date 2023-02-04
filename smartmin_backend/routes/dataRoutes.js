@@ -28,7 +28,7 @@ router.route('/room/:roomId/')
 
 router.route('/alerts')
     .get(verifyJWT,dataController.getAlerts);
-    router.route('/alerts/:alertId')
+router.route('/alerts/:alertId')
     .put(verifyJWT,dataController.readAlert);
     
 

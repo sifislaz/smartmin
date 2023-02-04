@@ -9,7 +9,7 @@ const handleLogin = async (req, res) => {
     if (!user || !pwd) return res.status(400).json({ 'message': 'Username and password are required.' });
     
     const foundUser = await Users.findOne({'username': user}).exec();
-    if (!foundUser) return res.sendStatus(401); //Unauthorized 
+    if (!foundUser) return res.status(401).json({'message':'User not found'}); //Unauthorized 
 
     // evaluate password 
     const match = await bcrypt.compare(pwd, foundUser.password);
@@ -18,7 +18,7 @@ const handleLogin = async (req, res) => {
         const accessToken = jwt.sign(
             { "username": foundUser.username },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '150m' }
+            { expiresIn: '30m' }
         );
         const refreshToken = jwt.sign(
             { "username": foundUser.username },
@@ -45,7 +45,7 @@ const handleLogin = async (req, res) => {
         });
         res.json({ accessToken });
     } else {
-        res.sendStatus(401);
+        res.status(401).json({"message":"Username and Password don't match."});
     }
 }
 
