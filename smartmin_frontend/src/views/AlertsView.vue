@@ -45,7 +45,7 @@ export default{
         async fetchAlerts(){
             let alertsRes = null;
             try{
-                alertsRes = await axios.get("http://localhost:5000/alerts");
+                alertsRes = await axios.get("http://localhost:3000/data/alerts",{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                 this.alerts = alertsRes.data
             }
             catch(e){

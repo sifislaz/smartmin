@@ -4,18 +4,18 @@
         <h1 class="text-primary text-center">{{ roomName }}</h1>
         <v-card class="bg-bgDark rounded-shaped">
             <v-tabs v-model="tab" bg-color="secondary">
-                <v-tab value="settings">Settings</v-tab>
+                <v-tab value="devices" @click="fetchContent">Devices</v-tab>
                 <v-tab value="temp">Temperature Graph</v-tab>
                 <v-tab value="humid">Humidity Graph</v-tab>
             </v-tabs>
             <v-card-text>
                 <v-window v-model="tab">
-                    <v-window-item value="settings">
-                        <h2 class="text-secondary text-center">Settings</h2>
-                        <div v-for="sensor of sensors" :key="sensor.id" class="bg-primary rounded-lg pa-4 my-2 d-flex justify-center align-center w-50 mx-auto">
+                    <v-window-item value="devices">
+                        <h2 class="text-secondary text-center">Devices</h2>
+                        <div v-show="fail"><v-alert type="error" class="w-25 mx-auto my-2">Couldn't change the device's state</v-alert></div>
+                        <div v-for="sensor of sensors" :key="sensor.id" class="bg-primary rounded-lg pa-4 my-2 d-flex justify-space-between align-center w-25 mx-auto">
                             <span class="text-white text-h5">{{sensor.type}}</span>
-                            <v-switch :model-value="sensor.value" color="switchGreen" class="ml-5" inset hide-details></v-switch>
-                            <a :href="$route.params.id+'/settings/'+sensor.id" class="text-white">Settings</a>
+                            <div><v-switch v-model="switches" :value="sensor.id" color="switchGreen" inset hide-details @change="updateSensor(sensor.id)"></v-switch></div>
                         </div>
                     </v-window-item>
                     <v-window-item value="temp">
@@ -61,6 +61,7 @@ export default{
         tab: null,
         sensors:[],
         temp:[],
+        switches:[],
         humid:[],
         roomName:null,
         avgTemp:null,
@@ -71,51 +72,61 @@ export default{
         minHumid:null,
         tmpRng:null,
         humRng:null,
+        fail:false,
+        roomId:null
     }),
     async created(){
-        this.fetchContent(this.$route.params.id)
-        this.fetchTemp("today",this.$route.params.id)
-        this.fetchHumid("today",this.$route.params.id)
+        this.roomId = this.$route.params.id
+        this.fetchContent()
+        this.fetchTemp("today")
+        this.fetchHumid("today")
     },
     async updated(){
-        this.fetchContent(this.$route.params.id)
-        this.fetchTemp(this.tmpRng,this.$route.params.id)
-        this.fetchHumid(this.humRng,this.$route.params.id)
+        this.roomId = this.$route.params.id
+        this.fetchContent()
+        this.fetchTemp(this.tmpRng)
+        this.fetchHumid(this.humRng)
     },
     methods:{
-        async fetchContent(id){
+        async fetchContent(){
             let room = null;
+            this.switches = [];
+            this.fail = false;
             try{
-                room = await axios.get(`http://localhost:3000/rooms/${id}`);
+                room = await axios.get(`http://localhost:3000/data/room/${id}`, {headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                 this.roomName = room.data.name;
                 this.sensors = room.data.sensors;
+                for(let sensor of this.sensors){
+                    if(sensor.value){
+                        this.switches.push(sensor.id);
+                    }
+                }
             }
             catch(e){
                 console.log(e);
             }
         },
-        async fetchTemp(range,roomId = this.$route.params.id,){
+        async fetchTemp(range){
             this.tmpRng = range;
             let tempRes = null;
             try{
                 switch(range){
                     case "today":
-                        tempRes = await axios.get(`http://localhost:3000/data/room/${roomId}/temp?timeNumber=1&timeScale=days`);
+                        tempRes = await axios.get(`http://localhost:3000/data/room/${this.roomId}/temp?timeNumber=1&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                     case "3day":
-                        tempRes = await axios.get(`http://localhost:3000/data/room/${roomId}/temp?timeNumber=3&timeScale=days`);
+                        tempRes = await axios.get(`http://localhost:3000/data/room/${this.roomId}/temp?timeNumber=3&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                     case "week":
-                        tempRes = await axios.get(`http://localhost:3000/data/room/${roomId}/temp?timeNumber=7&timeScale=days`);
+                        tempRes = await axios.get(`http://localhost:3000/data/room/${this.roomId}/temp?timeNumber=7&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                     case "2weeks":
-                        tempRes = await axios.get(`http://localhost:3000/data/room/${roomId}/temp?timeNumber=14&timeScale=days`);
+                        tempRes = await axios.get(`http://localhost:3000/data/room/${this.roomId}/temp?timeNumber=14&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                     case "month":
-                        tempRes = await axios.get(`http://localhost:3000/data/room/${roomId}/temp?timeNumber=30&timeScale=days`);
+                        tempRes = await axios.get(`http://localhost:3000/data/room/${this.roomId}/temp?timeNumber=30&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                 }
-                
                 this.temp = tempRes.data.temp;
                 this.avgTemp = tempRes.data.averageTemp;
                 this.maxTemp = tempRes.data.maximumTemp;
@@ -126,37 +137,66 @@ export default{
                 console.log(e);
             }
         },
-        async fetchHumid(range,roomId = this.$route.params.id){
+        async fetchHumid(range){
             this.humRng = range;
             let humidRes = null;
             try{
                 switch(range){
                     case "today":
-                        humidRes = await axios.get(`http://localhost:3000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
+                        humidRes = await axios.get(`http://localhost:3000/data/room/${this.roomId}/hum?timeNumber=1&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                     case "3day":
-                        humidRes = await axios.get(`http://localhost:3000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
+                        humidRes = await axios.get(`http://localhost:3000/data/room/${this.roomId}/hum?timeNumber=1&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                     case "week":
-                        humidRes = await axios.get(`http://localhost:3000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
+                        humidRes = await axios.get(`http://localhost:3000/data/room/${this.roomId}/hum?timeNumber=1&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                     case "2weeks":
-                        humidRes = await axios.get(`http://localhost:3000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
+                        humidRes = await axios.get(`http://localhost:3000/data/room/${this.roomId}/hum?timeNumber=1&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                     case "month":
-                        humidRes = await axios.get(`http://localhost:3000/data/room/${roomId}/hum?timeNumber=1&timeScale=days`);
+                        humidRes = await axios.get(`http://localhost:3000/data/room/${this.roomId}/hum?timeNumber=1&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                 }
-                
                 this.humid = humidRes.data.hum;
-                this.avgHumid = humidRes.data.averageHumid;
-                this.maxHumid = humidRes.data.maximumHumid;
-                this.minHumid = humidRes.data.minimumHumid;
+                this.avgHumid = humidRes.data.averageHum;
+                this.maxHumid = humidRes.data.maximumHum;
+                this.minHumid = humidRes.data.minimumHum;
                 this.$emit('change-values');
             }
             catch(e){
                 console.log(e);
             }
+        },
+        async updateSensor(sensorId){
+
+            let sensorValue = false;
+            if(this.switches.includes(sensorId)){
+                sensorValue = true;
+            }
+            else{
+                sensorValue = false
+            }
+            const res = {id:sensorId, value:sensorValue, roomId:this.roomId}
+            try{
+                //const upd = await axios.post(`http://localhost:3000/data/rooms/${roomId}`,res);
+                const upd = await axios.post(`http://localhost:5000/rooms/${this.roomId}/sensors/${sensorId}`,res);
+                this.fail = false;
+                console.log(upd);
+            }
+            catch(e){
+                if(sensorValue){
+                    this.switches = this.switches.filter((value)=>{
+                        if(value!==sensorId) return value
+                    })
+                }
+                else{
+                    this.switches.push(sensorId);
+                }
+                this.fail = true;
+                console.log(e);
+            }
+            
         }
     },
     emits: ['change-values']
