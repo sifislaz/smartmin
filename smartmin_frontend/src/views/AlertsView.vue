@@ -2,6 +2,7 @@
     <NavPanel/>
     <v-sheet color="bgLight" class="w-100 h-100">
         <h1 class="text-primary text-center">Alerts</h1>
+        <v-btn color="secondary" class="mx-auto my-2 d-block" @click="readAllAlerts">Read All</v-btn>
         <template v-for="alert in alerts" :key="alert._id">
             <div class="mt-2">
                 <v-banner icon="mdi-exclamation-thick" :color="alert.severity!=='Hazard'?alert.severity!=='Medium'?'alertGreen':'alertOrange':'alertRed'" class="mb-2 w-75 mx-auto">
@@ -14,7 +15,7 @@
                 </v-banner>
             </div>
         </template>
-        <v-btn color="secondary" class="mx-auto my-2 d-block" @click="readAllAlerts">Read All</v-btn>
+        
         <v-pagination v-model="currentPage" :length="totalPages" @update:model-value="handlePageChange" rounded="circle" color="secondary"></v-pagination>
     </v-sheet>
     <FooterBar/>
