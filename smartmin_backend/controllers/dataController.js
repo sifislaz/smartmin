@@ -59,7 +59,7 @@ const readAlert = async(req,res)=>{
 
 const readAllAlerts = async(req,res)=>{
     try{
-        let result = await Alert.updateMany({}, {isRead:true});
+        let result = await Alert.updateMany({isRead:false}, {isRead:true});
         res.status(200).json(result)
 
     }catch(err){

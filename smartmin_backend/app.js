@@ -27,14 +27,6 @@ mongoose.connect(uri,
 
 //Handle CORS + middleware
 app.use(credentials)
-app.use(function(req, res, next){
-
-    res.header("Access-Control-Allow-Credentials", true)
-    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE"); 
-    res.header("Access-Control-Allow-Headers", "auth-token, Origin, X-Requested-With, Content-Type, Accept, authorization");
-    
-    next();
-})
 
 //parsing middleware
 app.use(express.json())

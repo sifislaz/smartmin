@@ -24,7 +24,7 @@ const checkTempValue = async (temp)=>{
         message.severity = 'Medium';
         message.origin = roomName;
         message.title = `High temperature`;
-        message.body = `Sensor ${temp.origin.sensorId} has reported a tempeture of ${temp.reading.value} °C in `
+        message.body = `Sensor ${temp.origin.sensorId} has reported a temperature of ${temp.reading.value} °C in `
         createAlert(message);
         //doStuff()
         return true;
@@ -33,7 +33,7 @@ const checkTempValue = async (temp)=>{
         message.severity = 'Medium';
         message.origin = roomName;
         message.title = `Low temperature`;
-        message.body = `Sensor ${temp.origin.sensorId} has reported a tempeture of ${temp.reading.value} °C in `
+        message.body = `Sensor ${temp.origin.sensorId} has reported a temperature of ${temp.reading.value} °C in `
         createAlert(message);
         //doStuff()
         return true;
@@ -42,7 +42,7 @@ const checkTempValue = async (temp)=>{
         message.severity = 'Hazard';
         message.title = `Extremely high temperature`;
         message.origin = roomName;
-        message.body = `Sensor ${temp.origin.sensorId} has reported a tempeture of ${temp.reading.value} °C in `
+        message.body = `Sensor ${temp.origin.sensorId} has reported a temperature of ${temp.reading.value} °C in `
         createAlert(message);
         //doStuff()
         return true;
@@ -51,7 +51,7 @@ const checkTempValue = async (temp)=>{
         message.severity = 'Hazard';
         message.origin = roomName;
         message.title = `Extremely low temperature`;
-        message.body = `Sensor ${temp.origin.sensorId} has reported a tempeture of ${temp.reading.value} °C in `
+        message.body = `Sensor ${temp.origin.sensorId} has reported a temperature of ${temp.reading.value} °C in `
         createAlert(message);
         //doStuff()
         return true;
@@ -96,7 +96,7 @@ const checkHumValue =  async (hum)=>{
         message.severity = 'Hazard';
         message.title = `Extremely high humidity`;
         message.origin = roomName;
-        message.body = `Sensor ${hum.origin.sensorId} has reported a tempeture of ${hum.reading.value} RH in `
+        message.body = `Sensor ${hum.origin.sensorId} has reported a humidity reading of ${hum.reading.value} RH in `
         createAlert(message);
         //doStuff()
         return true;
@@ -105,7 +105,7 @@ const checkHumValue =  async (hum)=>{
         message.severity = 'Hazard';
         message.origin = roomName;
         message.title = `Extremely low humidity`;
-        message.body = `Sensor ${hum.origin.sensorId} has reported a  humidity reading of ${hum.reading.value} RH in `
+        message.body = `Sensor ${hum.origin.sensorId} has reported a humidity reading of ${hum.reading.value} RH in `
         createAlert(message);
         //doStuff()
         return true;
