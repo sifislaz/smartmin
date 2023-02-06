@@ -17,7 +17,7 @@ router.route('/room/:roomId/hum')
 
 
 router.route('/room/')
-    .get(roomController.getAllRooms)
+    .get(verifyJWT,roomController.getAllRooms)
     .post(verifyJWT,roomController.createNewRoom)
     .delete(verifyJWT,roomController.deleteRoom)
     .put(verifyJWT,roomController.updateRoom);

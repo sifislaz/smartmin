@@ -63,8 +63,15 @@ const deleteRoom = async(req, res) =>{
 
 const setRoomSensors = async (req, res) =>{
     try{
+        console.log(req.body);
         let room = await Room.findById(req.params.roomId).exec();
-        room.sensors = req.body.sensors;
+        for(let sensor of room.sensors){
+            if(sensor.sensId===req.body.id){
+                sensor.sensValue = req.body.value;
+                break;
+            }
+            else continue;
+        }
         const newRoom =await room.save();
 
         res.status(200).json(newRoom)

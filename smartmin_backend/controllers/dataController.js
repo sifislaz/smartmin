@@ -71,7 +71,9 @@ const readAllAlerts = async(req,res)=>{
 const getCurrentData = async (req,res) =>{
 
     try{
-        let rooms = await Room.find({},'name accessibility').lean().exec();
+        // let rooms = await Room.find({},'name accessibility').lean().exec();
+        let rooms = await Room.find({}).lean().exec();
+        console.log(rooms);
         const result = [];
         for(let obj of rooms){
             let tempObj = {};

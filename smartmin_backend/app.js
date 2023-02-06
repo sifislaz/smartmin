@@ -16,8 +16,8 @@ const app = express()
 mongoose.set('strictQuery', true);
 const uri = process.env.DB_URI
 mongoose.connect(uri,
-    // {dbName: 'SmartminDB'},
-    {dbName: 'test'},
+    {dbName: 'SmartminDB'},
+    // {dbName: 'test'},
 
     {
     useNewUrlParser: true,
@@ -38,7 +38,7 @@ app.get("/", dataController.getCurrentData);
 
 //log, in & out 
 app.use('/auth', require('./routes/auth'))
-app.use('/refresh', require('./routes/refresh'))
+// app.use('/refresh', require('./routes/refresh'))
 app.use('/logout', require('./routes/logout'))
 
 //see data and change device state only if logged in
