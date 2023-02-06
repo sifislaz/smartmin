@@ -13,9 +13,9 @@
                     <v-window-item value="devices">
                         <h2 class="text-secondary text-center">Devices</h2>
                         <div v-show="fail"><v-alert type="error" class="w-25 mx-auto my-2">Couldn't change the device's state</v-alert></div>
-                        <div v-for="sensor of sensors" :key="sensor.id" class="bg-primary rounded-lg pa-4 my-2 d-flex justify-space-between align-center w-25 mx-auto">
-                            <span class="text-white text-h5">{{sensor.type}}</span>
-                            <div><v-switch v-model="switches" :value="sensor.id" color="switchGreen" inset hide-details @change="updateSensor(sensor.id)"></v-switch></div>
+                        <div v-for="sensor of sensors" :key="sensor.sensId" class="bg-primary rounded-lg pa-4 my-2 d-flex justify-space-between align-center w-25 mx-auto">
+                            <span class="text-white text-h5">{{sensor.sensType}}</span>
+                            <div><v-switch v-model="switches" :value="sensor.sensId" color="switchGreen" inset hide-details @change="updateSensor(sensor.sensId)"></v-switch></div>
                         </div>
                     </v-window-item>
                     <v-window-item value="temp">
@@ -97,8 +97,8 @@ export default{
                 this.roomName = room.data.name;
                 this.sensors = room.data.sensors;
                 for(let sensor of this.sensors){
-                    if(sensor.value){
-                        this.switches.push(sensor.id);
+                    if(sensor.sensValue){
+                        this.switches.push(sensor.sensId);
                     }
                 }
             }
@@ -179,9 +179,8 @@ export default{
             }
             const res = {id:sensorId, value:sensorValue, roomId:this.roomId}
             try{
-                const upd = await axios.post(`http://localhost:3000/data/rooms/${this.roomId}`,res,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
+                await axios.post(`http://localhost:3000/data/room/${this.roomId}`,res,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                 this.fail = false;
-                console.log(upd);
             }
             catch(e){
                 if(sensorValue){

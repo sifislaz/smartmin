@@ -9,7 +9,7 @@
                     <template v-slot:text>
                         <div class="text-black font-weight-bold text-uppercase d-md-block d-lg-inline">{{alert.title}}</div>
                         <div class="text-black ml-lg-1 d-md-block d-lg-inline">{{alert.body}} <span class="text-secondary">{{alert.origin}}</span></div>
-                        <div class="text-grey ml-lg-1 d-md-block d-lg-inline">{{alert.datetime}}</div>
+                        <div class="text-grey ml-lg-1 d-md-block d-lg-inline">{{alert.date}}</div>
                         <div class="text-grey ml-lg-1 d-md-block d-lg-inline float-right" v-if="!alert.isRead"><v-btn color="secondary" @click="readAlert(alert._id)">Read</v-btn></div>
                     </template>
                 </v-banner>
