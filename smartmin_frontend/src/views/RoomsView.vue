@@ -177,9 +177,9 @@ export default{
             else{
                 sensorValue = false
             }
-            const res = {id:sensorId, value:sensorValue, roomId:this.roomId}
+            const res = {sensId:sensorId, newDeviceValue:sensorValue, roomId:this.roomId}
             try{
-                await axios.post(`http://localhost:3000/data/room/${this.roomId}`,res,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
+                await axios.post(`http://localhost:3000/device/state`,res,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                 this.fail = false;
             }
             catch(e){

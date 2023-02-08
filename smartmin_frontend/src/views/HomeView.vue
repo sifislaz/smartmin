@@ -14,9 +14,9 @@
               <span class="text-h6">Humidity:</span>
               <span class="ml-1 font-weight-medium">{{ room.humidity.reading.value }}%</span>
             </span>
-            <span v-if="room.accessibility">
+            <span>
               <span class="text-h6">Accessibility:</span>
-              <span class="ml-1 font-weight-medium text-uppercase pa-1 rounded" :class="room.accessibility.value?'bg-switchGreen':'bg-alertRed'">{{ room.accessibility.value?"yes":"no" }}</span>
+              <span class="ml-1 font-weight-medium text-uppercase pa-1 rounded" :class="room.accessibility?'bg-switchGreen':'bg-alertRed'">{{ room.accessibility?"yes":"no" }}</span>
             </span>
           </div>
           
@@ -50,6 +50,7 @@ export default defineComponent({
   methods:{
     async fetchData(){
       const roomRes = await axios.get("http://localhost:3000/");
+      console.log(roomRes.data);
       this.rooms = roomRes.data;
     }
   }
