@@ -38,6 +38,11 @@ const getAlerts = async (req, res) =>{
             result.alerts = await Alert.find().sort({date: 'desc'}).skip((pageNumber-1)*pageSize).limit(pageSize).lean().exec();   
         }
 
+        //change time to readable string
+        for(let alert of result.alerts){
+            alert.date = new Date(alert.date).toLocaleString('en-GB', {timezone:'Europe/Athens', hour12:false});   
+        }
+        
         res.status(200).json(result)
     }catch(err){
         res.status(500).json({'message':err.message});
@@ -71,8 +76,8 @@ const readAllAlerts = async(req,res)=>{
 const getCurrentData = async (req,res) =>{
 
     try{
-        // let rooms = await Room.find({},'name accessibility').lean().exec();
-        let rooms = await Room.find({}).lean().exec();
+         let rooms = await Room.find({},'name accessibility').lean().exec();
+        //let rooms = await Room.find({}).lean().exec();
         console.log(rooms);
         const result = [];
         for(let obj of rooms){
