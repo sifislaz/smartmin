@@ -2,6 +2,8 @@ const Humidity = require('../model/Humidity');
 const Temperature = require('../model/Temperature');
 const Room = require("../model/Room");
 const Alert = require("../model/Alert");
+const nodemailer = require('nodemailer');
+const dotenv = require('dotenv').config({ path: './config.env' });
 
 
 const checkTempValue = async (temp)=>{
@@ -26,6 +28,7 @@ const checkTempValue = async (temp)=>{
         message.title = `High temperature`;
         message.body = `Sensor ${temp.origin.sensorId} has reported a temperature of ${temp.reading.value} °C in `
         createAlert(message);
+        sendAlert(message);
         return true;
     }
     else if((temp.reading.value <= (idealTemp - moderateDeviation))  && ((idealTemp - severeDeviation) < temp.reading.value)){  // moderate cold
@@ -34,6 +37,7 @@ const checkTempValue = async (temp)=>{
         message.title = `Low temperature`;
         message.body = `Sensor ${temp.origin.sensorId} has reported a temperature of ${temp.reading.value} °C in `
         createAlert(message);
+        sendAlert(message);
         return true;
     }
     else if((idealTemp + severeDeviation) <=(temp.reading.value)){  // severe heat
@@ -42,6 +46,7 @@ const checkTempValue = async (temp)=>{
         message.origin = roomName;
         message.body = `Sensor ${temp.origin.sensorId} has reported a temperature of ${temp.reading.value} °C in `
         createAlert(message);
+        sendAlert(message);
         return true;
     }
     else if((temp.reading.value)<= (idealTemp - severeDeviation)) {  // severe cold
@@ -50,6 +55,7 @@ const checkTempValue = async (temp)=>{
         message.title = `Extremely low temperature`;
         message.body = `Sensor ${temp.origin.sensorId} has reported a temperature of ${temp.reading.value} °C in `
         createAlert(message);
+        sendAlert(message);
         return true;
     }
 }
@@ -76,6 +82,7 @@ const checkHumValue =  async (hum)=>{
         message.title = `High humidity`;
         message.body = `Sensor ${hum.origin.sensorId} has reported a humidity reading of ${hum.reading.value} RH in `
         createAlert(message);
+        sendAlert(message);
         return true;
     }
     else if((hum.reading.value <= (idealRH - moderateDeviation))  && ((idealRH - severeDeviation) < hum.reading.value)){  // moderate dryness
@@ -84,6 +91,7 @@ const checkHumValue =  async (hum)=>{
         message.title = `Low humidity`;
         message.body = `Sensor ${hum.origin.sensorId} has reported a humidity reading of ${hum.reading.value} RH in `
         createAlert(message);
+        sendAlert(message);
         return true;
     }
     else if((idealRH + severeDeviation) <=(hum.reading.value)){  // severe humidity
@@ -92,6 +100,7 @@ const checkHumValue =  async (hum)=>{
         message.origin = roomName;
         message.body = `Sensor ${hum.origin.sensorId} has reported a humidity reading of ${hum.reading.value} RH in `
         createAlert(message);
+        sendAlert(message);
         return true;
     }
     else if((hum.reading.value)<= (idealRH - severeDeviation)) {  // severe dryness
@@ -100,6 +109,7 @@ const checkHumValue =  async (hum)=>{
         message.title = `Extremely low humidity`;
         message.body = `Sensor ${hum.origin.sensorId} has reported a humidity reading of ${hum.reading.value} RH in `
         createAlert(message);
+        sendAlert(message);
         return true;
     }
 }
@@ -112,6 +122,30 @@ const createAlert = async (info) =>  {
         console.log(err);
     }
     
+}
+
+function sendAlert(info){
+    let transporter = nodemailer.createTransport({
+        service:'gmail',
+        auth:{
+            user: process.env.MAIL_USER,
+            pass: process.env.MAIL_PASSWORD
+        }
+    });
+
+    let mailInfo = {
+        from: `Smartmin System <${process.env.MAIL_USER}>`,
+        to: `${process.env.MAIL_ADMIN}`,
+        subject: `${info.title} in ${info.origin}`,
+        text: `Hello,\n${info.body}${info.origin} at ${new Date().toLocaleString('en-GB',{timezone:"Europe/Athens",hour12:false})}.\nRegards,\nSmartmin System`
+    }
+
+    try{
+        transporter.sendMail(mailInfo);
+    }
+    catch(e){
+        console.log(e);
+    }
 }
 
 
