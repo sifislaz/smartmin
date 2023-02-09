@@ -23,7 +23,6 @@ const getRoom = async(req, res) =>{
 
 const createNewRoom = async(req,res) =>{
     const { name, location} = req.body;
-    console.log(name)
     try{
         const result = await Room.create({
             "name": name,
@@ -63,7 +62,6 @@ const deleteRoom = async(req, res) =>{
 
 const setRoomSensors = async (req, res) =>{
     try{
-        console.log(req.body);
         let room = await Room.findById(req.params.roomId).exec();
         room.sensors = req.body.sensors;
         const newRoom =await room.save();

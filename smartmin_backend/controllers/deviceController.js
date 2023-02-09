@@ -14,7 +14,6 @@ const changeDeviceState = async (req,res)=>{
        return res.status(400).json({'Bad Request':'No sensor with that ID exists'});
     }
 
-    //console.log(device);
     if(device.sensValue === req.body.newDeviceValue){
         return res.status(200).json({'No Change': 'Device is already at requsted state'});
     }

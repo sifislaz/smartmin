@@ -20,7 +20,7 @@ const getAlerts = async (req, res) =>{
             else{result.totalPages = Math.ceil(result.totalAlerts/pageSize);}
 
             if(pageNumber>result.totalPages){
-                return  res.status(400).json({'Bad Request':'Page number exciteds total pages'})
+                return  res.status(400).json({'Bad Request':'Page number exceeds total pages'})
             }
 
             result.alerts = await Alert.find({isRead: false}).sort({date: 'desc'}).skip((pageNumber-1)*pageSize).limit(pageSize).lean().exec();
@@ -32,7 +32,7 @@ const getAlerts = async (req, res) =>{
             else{result.totalPages = Math.ceil(result.totalAlerts/pageSize);}
 
             if(pageNumber>result.totalPages){
-                return  res.status(400).json({'Bad Request':'Page number exciteds total pages'})
+                return  res.status(400).json({'Bad Request':'Page number exceeds total pages'})
             }
 
             result.alerts = await Alert.find().sort({date: 'desc'}).skip((pageNumber-1)*pageSize).limit(pageSize).lean().exec();   
@@ -77,8 +77,6 @@ const getCurrentData = async (req,res) =>{
 
     try{
          let rooms = await Room.find({},'name accessibility').lean().exec();
-        //let rooms = await Room.find({}).lean().exec();
-        console.log(rooms);
         const result = [];
         for(let obj of rooms){
             let tempObj = {};

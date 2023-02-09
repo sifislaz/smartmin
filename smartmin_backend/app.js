@@ -17,8 +17,6 @@ mongoose.set('strictQuery', true);
 const uri = process.env.DB_URI
 mongoose.connect(uri,
     {dbName: 'SmartminDB'},
-    // {dbName: 'test'},
-
     {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -50,7 +48,7 @@ app.use('/device/state', require('./routes/device'))
 mongoose.connection.once('open', ()=>{
     console.log("MongoDB connected")
     app.listen(3000, () =>{
-        console.log("listeing at port 3000")
+        console.log("listening at port 3000")
     })
     
 })

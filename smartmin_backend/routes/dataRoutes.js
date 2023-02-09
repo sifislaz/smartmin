@@ -31,17 +31,5 @@ router.route('/alerts')
     .post(verifyJWT,dataController.readAllAlerts);
 router.route('/alerts/:alertId')
     .post(verifyJWT,dataController.readAlert);
-    
-
-/*
-router.route('/alerts/room/:roomId')
-    .get()
-    .post();
-
-
-router.route('/alerts/Severity/:severityVal')
-    .get()
-    .post();
-    */
 
 module.exports = router;

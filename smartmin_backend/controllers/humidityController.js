@@ -18,9 +18,6 @@ const addNewHumReading = async (req,res)=>{
             "reading": reading,
             "origin": origin
         });
-
-        //console.log(result);
-
         res.status(201).json({ 'success': `New hum reading of ${reading.value} created!` });
     } catch (err) {
         res.status(500).json({ 'message': err.message });
@@ -63,6 +60,7 @@ const getHumReading = async(req, res)=>{
     }
     else{
         average /= x.length;
+        average = Math.round(average*10)/10;
     }
         
     res.status(200).json({

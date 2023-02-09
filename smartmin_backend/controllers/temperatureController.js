@@ -72,6 +72,7 @@ const getTempReading = async(req, res)=>{
     }
     else{
         average /= x.length;
+        average = Math.round(average*10)/10;
     }
     
     
