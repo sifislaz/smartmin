@@ -29,13 +29,11 @@
         drawer: false,
         admin: null,
         open:[],
-        rooms:[
+        rooms:
+        [
             {icon:'mdi-desk', title:'Office 1', id:"63c04af69e05d8e5a0fa0a23"},
             {icon:'mdi-desk', title:'Office 2', id:"63c04afa9e05d8e5a0fa0a25"},
             {icon:'mdi-cube-outline', title:'Storage', id:"63c04b089e05d8e5a0fa0a27"},
-
-
-
         ]
       }),
       created(){
@@ -45,8 +43,7 @@
       methods:{
         async logout(){
           try{
-            const logout = await axios.get('http://localhost:3000/logout',{withCredentials:true});
-            console.log(logout.data);
+            await axios.get('http://localhost:3000/logout',{withCredentials:true});
           }
           catch(e){
             console.log(e);

@@ -50,7 +50,6 @@ export default defineComponent({
   methods:{
     async fetchData(){
       const roomRes = await axios.get("http://localhost:3000/");
-      console.log(roomRes.data);
       this.rooms = roomRes.data;
     }
   }
