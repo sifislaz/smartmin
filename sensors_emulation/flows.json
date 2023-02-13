@@ -1,0 +1,576 @@
+[
+    {
+        "id": "ff724938e2d2d2cc",
+        "type": "tab",
+        "label": "fake sensors",
+        "disabled": false,
+        "info": "sends https requests\r\nto local smartmin endpoint with random values",
+        "env": []
+    },
+    {
+        "id": "5db7bc3df20b473a",
+        "type": "group",
+        "z": "ff724938e2d2d2cc",
+        "name": "temp post",
+        "style": {
+            "stroke": "#ff0000",
+            "stroke-opacity": "0.73",
+            "label": true
+        },
+        "nodes": [
+            "30dd69de50a0b6f9",
+            "0dea19a9e1cbf2ea",
+            "0971c03493d34ad0",
+            "bce77d1730d62bac",
+            "bcbf9b4ded895cd8",
+            "889e57c10752999c",
+            "81f977b24309a91d",
+            "004d3d72104a04c5",
+            "42076c257bd72dd9",
+            "62de541b1f4f9681",
+            "ec8219c83cfce586"
+        ],
+        "x": 324,
+        "y": 319,
+        "w": 822,
+        "h": 242
+    },
+    {
+        "id": "53314a9c7d3f2baa",
+        "type": "group",
+        "z": "ff724938e2d2d2cc",
+        "name": "hum post",
+        "style": {
+            "stroke": "#0070c0",
+            "stroke-opacity": "0.73",
+            "label": true
+        },
+        "nodes": [
+            "335ab3961816bba8",
+            "665962fdbdd513ea",
+            "1e7c6ada5efa0642",
+            "b844d2d408714ca1",
+            "d115b24c55910e28",
+            "44257f9c44e4e344",
+            "dd0d95d95dc4deeb",
+            "78a1e22978c9522d"
+        ],
+        "x": 314,
+        "y": 599,
+        "w": 832,
+        "h": 242
+    },
+    {
+        "id": "90da57d5362774aa",
+        "type": "inject",
+        "z": "ff724938e2d2d2cc",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "900",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 580,
+        "wires": [
+            [
+                "30dd69de50a0b6f9",
+                "bce77d1730d62bac",
+                "81f977b24309a91d",
+                "335ab3961816bba8",
+                "dd0d95d95dc4deeb",
+                "78a1e22978c9522d"
+            ]
+        ]
+    },
+    {
+        "id": "30dd69de50a0b6f9",
+        "type": "function",
+        "z": "ff724938e2d2d2cc",
+        "g": "5db7bc3df20b473a",
+        "name": "random number temp",
+        "func": "function gaussianRandom(mean = 0, stdev = 1) {\n    let u = 1 - Math.random(); //Converting [0,1) to (0,1)\n    let v = Math.random();\n    let z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);\n    // Transform to the desired mean and standard deviation:\n    return Math.round((z * stdev + mean)*10)/10;\n}\nmsg.num = gaussianRandom(22,2.5);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 360,
+        "wires": [
+            [
+                "0dea19a9e1cbf2ea"
+            ]
+        ]
+    },
+    {
+        "id": "0dea19a9e1cbf2ea",
+        "type": "function",
+        "z": "ff724938e2d2d2cc",
+        "g": "5db7bc3df20b473a",
+        "name": "post office 1",
+        "func": "msg.headers = {}\nmsg.method = \"POST\"\nmsg.url = \"http://localhost:3000/data/room/\" + \"63c04af69e05d8e5a0fa0a23\" +\"/temp\";\n\n\n\nmsg.payload = {\n    \n    \"reading\" : {\n        \"value\" : msg.num\n    },\n    \"origin\" : {\n        \"sensorId\": \"TEMP1\"\n    }\n};\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 360,
+        "wires": [
+            [
+                "0971c03493d34ad0"
+            ]
+        ]
+    },
+    {
+        "id": "0971c03493d34ad0",
+        "type": "http request",
+        "z": "ff724938e2d2d2cc",
+        "g": "5db7bc3df20b473a",
+        "name": "",
+        "method": "use",
+        "ret": "txt",
+        "paytoqs": "body",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 830,
+        "y": 360,
+        "wires": [
+            [
+                "62de541b1f4f9681"
+            ]
+        ]
+    },
+    {
+        "id": "bce77d1730d62bac",
+        "type": "function",
+        "z": "ff724938e2d2d2cc",
+        "g": "5db7bc3df20b473a",
+        "name": "random number temp",
+        "func": "function gaussianRandom(mean = 0, stdev = 1) {\n    let u = 1 - Math.random(); //Converting [0,1) to (0,1)\n    let v = Math.random();\n    let z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);\n    // Transform to the desired mean and standard deviation:\n    return Math.round((z * stdev + mean)*10)/10;\n}\nmsg.num = gaussianRandom(22,2.5);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 440,
+        "wires": [
+            [
+                "bcbf9b4ded895cd8"
+            ]
+        ]
+    },
+    {
+        "id": "bcbf9b4ded895cd8",
+        "type": "function",
+        "z": "ff724938e2d2d2cc",
+        "g": "5db7bc3df20b473a",
+        "name": "post office 2",
+        "func": "msg.headers = {}\nmsg.method = \"POST\"\nmsg.url = \"http://localhost:3000/data/room/\" + \"63c04afa9e05d8e5a0fa0a25\" +\"/temp\";\n\n\n\nmsg.payload = {\n    \n    \"reading\" : {\n        \"value\" : msg.num\n    },\n    \"origin\" : {\n        \"sensorId\": \"TEMP1\"\n    }\n};\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 440,
+        "wires": [
+            [
+                "889e57c10752999c"
+            ]
+        ]
+    },
+    {
+        "id": "889e57c10752999c",
+        "type": "http request",
+        "z": "ff724938e2d2d2cc",
+        "g": "5db7bc3df20b473a",
+        "name": "",
+        "method": "use",
+        "ret": "txt",
+        "paytoqs": "body",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 830,
+        "y": 440,
+        "wires": [
+            [
+                "62de541b1f4f9681"
+            ]
+        ]
+    },
+    {
+        "id": "81f977b24309a91d",
+        "type": "function",
+        "z": "ff724938e2d2d2cc",
+        "g": "5db7bc3df20b473a",
+        "name": "random number temp",
+        "func": "function gaussianRandom(mean = 0, stdev = 1) {\n    let u = 1 - Math.random(); //Converting [0,1) to (0,1)\n    let v = Math.random();\n    let z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);\n    // Transform to the desired mean and standard deviation:\n    return Math.round((z * stdev + mean)*10)/10;\n}\nmsg.num = gaussianRandom(22,2.5);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 520,
+        "wires": [
+            [
+                "004d3d72104a04c5"
+            ]
+        ]
+    },
+    {
+        "id": "004d3d72104a04c5",
+        "type": "function",
+        "z": "ff724938e2d2d2cc",
+        "g": "5db7bc3df20b473a",
+        "name": "post storage",
+        "func": "msg.headers = {}\nmsg.method = \"POST\"\nmsg.url = \"http://localhost:3000/data/room/\" + \"63c04b089e05d8e5a0fa0a27\" +\"/temp\";\n\n\n\nmsg.payload = {\n    \n    \"reading\" : {\n        \"value\" : msg.num\n    },\n    \"origin\" : {\n        \"sensorId\": \"TEMP1\"\n    }\n};\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 520,
+        "wires": [
+            [
+                "42076c257bd72dd9"
+            ]
+        ]
+    },
+    {
+        "id": "42076c257bd72dd9",
+        "type": "http request",
+        "z": "ff724938e2d2d2cc",
+        "g": "5db7bc3df20b473a",
+        "name": "",
+        "method": "use",
+        "ret": "txt",
+        "paytoqs": "body",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 830,
+        "y": 520,
+        "wires": [
+            [
+                "62de541b1f4f9681"
+            ]
+        ]
+    },
+    {
+        "id": "62de541b1f4f9681",
+        "type": "join",
+        "z": "ff724938e2d2d2cc",
+        "g": "5db7bc3df20b473a",
+        "name": "",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "3",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 1010,
+        "y": 400,
+        "wires": [
+            [
+                "ec8219c83cfce586"
+            ]
+        ]
+    },
+    {
+        "id": "ec8219c83cfce586",
+        "type": "debug",
+        "z": "ff724938e2d2d2cc",
+        "g": "5db7bc3df20b473a",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1040,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "335ab3961816bba8",
+        "type": "function",
+        "z": "ff724938e2d2d2cc",
+        "g": "53314a9c7d3f2baa",
+        "name": "random number hum",
+        "func": "function gaussianRandom(mean = 0, stdev = 1) {\n    let u = 1 - Math.random(); //Converting [0,1) to (0,1)\n    let v = Math.random();\n    let z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);\n    // Transform to the desired mean and standard deviation:\n    return Math.round((z * stdev + mean)*10)/10;\n}\nmsg.num = gaussianRandom(50,5);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 640,
+        "wires": [
+            [
+                "935ab6296d5065e7"
+            ]
+        ]
+    },
+    {
+        "id": "665962fdbdd513ea",
+        "type": "http request",
+        "z": "ff724938e2d2d2cc",
+        "g": "53314a9c7d3f2baa",
+        "name": "",
+        "method": "use",
+        "ret": "txt",
+        "paytoqs": "body",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 830,
+        "y": 640,
+        "wires": [
+            [
+                "d115b24c55910e28"
+            ]
+        ]
+    },
+    {
+        "id": "1e7c6ada5efa0642",
+        "type": "http request",
+        "z": "ff724938e2d2d2cc",
+        "g": "53314a9c7d3f2baa",
+        "name": "",
+        "method": "use",
+        "ret": "txt",
+        "paytoqs": "body",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 830,
+        "y": 720,
+        "wires": [
+            [
+                "d115b24c55910e28"
+            ]
+        ]
+    },
+    {
+        "id": "b844d2d408714ca1",
+        "type": "http request",
+        "z": "ff724938e2d2d2cc",
+        "g": "53314a9c7d3f2baa",
+        "name": "",
+        "method": "use",
+        "ret": "txt",
+        "paytoqs": "body",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 830,
+        "y": 800,
+        "wires": [
+            [
+                "d115b24c55910e28"
+            ]
+        ]
+    },
+    {
+        "id": "d115b24c55910e28",
+        "type": "join",
+        "z": "ff724938e2d2d2cc",
+        "g": "53314a9c7d3f2baa",
+        "name": "",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "3",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 1010,
+        "y": 680,
+        "wires": [
+            [
+                "44257f9c44e4e344"
+            ]
+        ]
+    },
+    {
+        "id": "44257f9c44e4e344",
+        "type": "debug",
+        "z": "ff724938e2d2d2cc",
+        "g": "53314a9c7d3f2baa",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1040,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "dd0d95d95dc4deeb",
+        "type": "function",
+        "z": "ff724938e2d2d2cc",
+        "g": "53314a9c7d3f2baa",
+        "name": "random number hum",
+        "func": "function gaussianRandom(mean = 0, stdev = 1) {\n    let u = 1 - Math.random(); //Converting [0,1) to (0,1)\n    let v = Math.random();\n    let z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);\n    // Transform to the desired mean and standard deviation:\n    return Math.round((z * stdev + mean)*10)/10;\n}\nmsg.num = gaussianRandom(50,5);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 720,
+        "wires": [
+            [
+                "28c070ff23cfd8f3"
+            ]
+        ]
+    },
+    {
+        "id": "78a1e22978c9522d",
+        "type": "function",
+        "z": "ff724938e2d2d2cc",
+        "g": "53314a9c7d3f2baa",
+        "name": "random number hum",
+        "func": "function gaussianRandom(mean = 0, stdev = 1) {\n    let u = 1 - Math.random(); //Converting [0,1) to (0,1)\n    let v = Math.random();\n    let z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);\n    // Transform to the desired mean and standard deviation:\n    return Math.round((z * stdev + mean)*10)/10;\n}\nmsg.num = gaussianRandom(50,5);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 800,
+        "wires": [
+            [
+                "4ab6c64748ff79d8"
+            ]
+        ]
+    },
+    {
+        "id": "935ab6296d5065e7",
+        "type": "function",
+        "z": "ff724938e2d2d2cc",
+        "name": "post office 1",
+        "func": "msg.headers = {}\nmsg.method = \"POST\"\nmsg.url = \"http://localhost:3000/data/room/\" + \"63c04af69e05d8e5a0fa0a23\" +\"/hum\";\n\n\n\nmsg.payload = {\n    \n    \"reading\" : {\n        \"value\" : msg.num\n    },\n    \"origin\" : {\n        \"sensorId\": \"TEMP1\"\n    }\n};\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 640,
+        "wires": [
+            [
+                "665962fdbdd513ea"
+            ]
+        ]
+    },
+    {
+        "id": "28c070ff23cfd8f3",
+        "type": "function",
+        "z": "ff724938e2d2d2cc",
+        "name": "post office 2",
+        "func": "msg.headers = {}\nmsg.method = \"POST\"\nmsg.url = \"http://localhost:3000/data/room/\" + \"63c04afa9e05d8e5a0fa0a25\" +\"/hum\";\n\n\n\nmsg.payload = {\n    \n    \"reading\" : {\n        \"value\" : msg.num\n    },\n    \"origin\" : {\n        \"sensorId\": \"TEMP1\"\n    }\n};\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 720,
+        "wires": [
+            [
+                "1e7c6ada5efa0642"
+            ]
+        ]
+    },
+    {
+        "id": "4ab6c64748ff79d8",
+        "type": "function",
+        "z": "ff724938e2d2d2cc",
+        "name": "post storage",
+        "func": "msg.headers = {}\nmsg.method = \"POST\"\nmsg.url = \"http://localhost:3000/data/room/\" + \"63c04b089e05d8e5a0fa0a27\" +\"/hum\";\n\n\n\nmsg.payload = {\n    \n    \"reading\" : {\n        \"value\" : msg.num\n    },\n    \"origin\" : {\n        \"sensorId\": \"TEMP1\"\n    }\n};\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 800,
+        "wires": [
+            [
+                "b844d2d408714ca1"
+            ]
+        ]
+    }
+]
