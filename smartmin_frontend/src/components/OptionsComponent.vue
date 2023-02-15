@@ -45,6 +45,20 @@ export default{
             this.$emit(`${measure}`,range);
         }
     },
+    watch:{
+        type:function(newMeasure){
+            this.measure = newMeasure;
+        },
+        avgMeasure:function(newAvg){
+            this.averMeasure = newAvg;
+        },
+        maxMeasure:function(newMax){
+            this.maximumMeasure = newMax;
+        },
+        minMeasure:function(newMin){
+            this.minimumMeasure = newMin;
+        },
+    },
     emits: ['temp','humid']
 
 }

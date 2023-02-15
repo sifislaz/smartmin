@@ -146,16 +146,16 @@ export default{
                         humidRes = await axios.get(`http://localhost:3000/data/room/${this.roomId}/hum?timeNumber=1&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                     case "3day":
-                        humidRes = await axios.get(`http://localhost:3000/data/room/${this.roomId}/hum?timeNumber=1&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
+                        humidRes = await axios.get(`http://localhost:3000/data/room/${this.roomId}/hum?timeNumber=3&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                     case "week":
-                        humidRes = await axios.get(`http://localhost:3000/data/room/${this.roomId}/hum?timeNumber=1&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
+                        humidRes = await axios.get(`http://localhost:3000/data/room/${this.roomId}/hum?timeNumber=7&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                     case "2weeks":
-                        humidRes = await axios.get(`http://localhost:3000/data/room/${this.roomId}/hum?timeNumber=1&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
+                        humidRes = await axios.get(`http://localhost:3000/data/room/${this.roomId}/hum?timeNumber=14&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                     case "month":
-                        humidRes = await axios.get(`http://localhost:3000/data/room/${this.roomId}/hum?timeNumber=1&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
+                        humidRes = await axios.get(`http://localhost:3000/data/room/${this.roomId}/hum?timeNumber=30&timeScale=days`,{headers:{'authorization':localStorage.getItem('jwt')},withCredentials:true});
                         break;
                 }
                 this.humid = humidRes.data.hum;
