@@ -18,7 +18,14 @@ const addNewHumReading = async (req,res)=>{
             "reading": reading,
             "origin": origin
         });
-        res.status(201).json({ 'success': `New hum reading of ${reading.value} created!` });
+        const alert = await alertController.checkHumValue(result);
+        if(alert===false){        
+            res.status(201).json({ 'success': `New hum reading of ${reading.value} created!` });
+    }else{
+        res.status(201).json({ 
+        'success': `New hum reading of ${reading.value} created!`,
+        'warning': 'Alert created!'});
+        }
     } catch (err) {
         res.status(500).json({ 'message': err.message });
     }
